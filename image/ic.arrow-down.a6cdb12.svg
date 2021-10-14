@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="7px" viewBox="0 0 12 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>tri_left</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="组件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="header-copy-3" transform="translate(-746.000000, -29.000000)" fill="#999999">
+            <g id="head_1160">
+                <g id="Group-6">
+                    <g id="左" transform="translate(376.000000, 11.000000)">
+                        <g id="入口" transform="translate(183.000000, 10.000000)">
+                            <g id="icons/tri_left" transform="translate(193.500000, 11.000000) scale(-1, -1) rotate(90.000000) translate(-193.500000, -11.000000) translate(189.500000, 4.500000)">
+                                <polygon id="tri_left" transform="translate(3.500500, 6.000500) scale(-1, 1) rotate(90.000000) translate(-3.500500, -6.000500) " points="3.5 2.5 -2.5 8.5 -1.5 9.501 3.5 4.5 8.501 9.501 9.501 8.5"></polygon>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

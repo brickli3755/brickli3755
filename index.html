@@ -1,304 +1,75 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8"/>
-<title>李小宝儿子❤️杨春丽母亲</title>
-<!-- style -->
-<link type="text/css" rel="stylesheet" href="css/theme.css">
-<script src="js/jquery-2.0.3.min.js"></script>
-</head>
-<body>
-<div id="div_container">
-	<!-- 最外层div，用于居中兼容PC和移动 -->
-	<div id="div_start_bg"></div>
-	<div id="div_onlyyou">
-		<!-- 用于设置背景 -->
-		<div id="div_oy_inner">
-			<!-- 用于存放content -->
-			<div class="div_oy_text">
-				<h1></h1>
-				<img class="img_oy_text" src="">
-				<p class="p_oy_text"></p>
-				<ul id="ul_oy_benefit">
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-					<li class="li_oy_benefit"></li>
-				</ul>
-			</div>
-			<ul id="ul_oy_btn">
-				<li onclick="oy_go_next()">Yes&nbsp;&nbsp;❤</li>
-				<li onclick="oy_show_benefit()">No&nbsp;&nbsp;✖</li>
-			</ul>
-			<div id="div_oy_note" onclick="oy_hide_note()">
-				<img src="images/emoji_kelian.jpg" alt=""><br>请告诉我Yes！
-				<div id="div_oy_note_close">✖</div>
-			</div>
-			<div id="div_oy_yes">
-				<img src="images/emoji_bixin.jpg" alt=""><br>太好了！哈哈~
-			</div>
-		</div>
-	</div>
-	<div class="div_pure_words">
-		<div class="div_pure_words_bg">
-			<div class="div_pure_words_height"></div>
-		</div>
-		<div class="div_pw_typed">
-			<span id="span_pw_typed"></span>
-		</div>
-	</div>
-	<div id="div_btn_container">
-		<div id="div_btn_inner">
-			<div class="div_music_tips"></div>
-			<div class="div_btn" id="div_music" onclick="music_switch()">
-				<!-- 音乐按钮部分 -->
-				<img id="img_music" src="images/music_note_big.png" style="-webkit-animation:music_play_rotate 1s linear infinite">
-				<!-- 您的浏览器不支持播放音乐 -->
-				<audio id="audio_music" autoplay="autoplay" loop="loop"><source type="audio/mpeg"/></audio>
-			</div>
-			<div class="div_record_tips"></div>
-			<div class="div_btn" id="div_record" onclick="record_switch()">
-				<audio id="audio_record" loop="loop"><source type="audio/mpeg"/></audio>
-			</div>
-		</div>
-	</div>
-</div>
-<script>
-//判断客户端设备，选择写入meta
-function init_viewport() {
-	if (navigator.userAgent.indexOf('Android') != -1) {
-		var version = parseFloat(RegExp.$1);
-		if (version > 2.3) {
-			var width = window.outerWidth == 0 ? window.screen.width : window.outerWidth;
-			var phoneScale = parseInt(width) / 500;
-			document.write('<meta name="viewport" content="width=500, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
-		} else {
-			document.write('<meta name="viewport" content="width=500, target-densitydpi=device-dpi, user-scalable=0">');
-		}
-	} else if (navigator.userAgent.indexOf('iPhone') != -1) {
-		var phoneScale = parseInt(window.screen.width) / 500;
-		document.write('<meta name="viewport" content="width=500, min-height=750, initial-scale=' + phoneScale + ', maximum-scale=' + phoneScale + ', user-scalable=0" /> '); //0.75   0.82
-	} else {
-		document.write('<meta name="viewport" content="width=500, height=750, initial-scale=0.64" /> '); //0.75  0.82
-	}
-}
-init_viewport();
-
-var theme = 'pure_words';
-console.log('theme ->' + theme);
-var theme_content = {
-	"pure_words_content": "遇见你是我所有美好故事的开始，所以，请别放开我的手，也别缺席我的将来，因为一辈子和你在一起才叫将来<um style='color: #F44336;'>💕</um>",
-	"typed_bool": "typed_y",
-	"cursor_char": "cursor_heart",
-	"bg_style_pure_words": "bg_opacity",
-	"bg_img": "images/3.jpg",
-	"simple_page_content": "",
-	"video_page_content": ""
-};
-console.log(theme_content);
-
-var music_json = {
-	"music_select": "m_online",
-	"m_online_id": "7",
-	"m_online_url": "images/1.mp3",
-	"m_upload_name": "null",
-	"m_upload_url": "null"
-};
-console.log(music_json);
-var record_json = {
-	"record_bool": "r_false",
-	"r_wechat_time": "null",
-	"r_wechat_url": "null",
-	"r_wechat_amr": "null"
-};
-console.log(record_json);
-
-
-var main_title = '我喜欢你❤️';
-// console.log(main_title);
-if (main_title == '' || main_title == 'null') { //允许标题为空
-	document.title = '慢慢喜欢你';
-}
-
-var window_height = $(window).height();
-console.log('window_height ->' + window_height);
-var pure_words_content = theme_content['pure_words_content'];
-var str_cursorChar;
-var typed_bool;
-var interval_pw_height;
-var height_div_pw = $(".div_pure_words_height").height();
-function init_pure_words() {
-	$(".div_pure_words_height").html(pure_words_content + '22222'); //初始化复制内容，撑开文档高度            
-	// 初始化设置div的bg图片 初始化设置div的bg图片
-	if (typeof(theme_content['bg_style_pure_words']) != 'undefined' && theme_content['bg_style_pure_words'] == 'bg_opacity') {
-		if (typeof(theme_content['bg_img']) != 'undefined' && theme_content['bg_img'] != '') {
-			$(".div_pure_words_bg").css({
-				"background-image": "url(" + theme_content['bg_img'] + ")"
-			});
-		}
-	}
-	//以下是打字效果的js 
-	if (typeof(theme_content['cursor_char']) != 'undefined' && theme_content['cursor_char'] != '') {
-		switch (theme_content['cursor_char']) { //设置打字光标的样式
-		case 'cursor_heart':
-			str_cursorChar = '<um style="color: #F44336;">❤</um>';
-			break;
-		case 'cursor_sub':
-			str_cursorChar = '_';
-			break;
-		case 'cursor_music':
-			str_cursorChar = '♫';
-			break;
-		case 'cursor_star':
-			str_cursorChar = '★';
-			break;
-		case 'cursor_sun':
-			str_cursorChar = '☀';
-			break;
-		default:
-			str_cursorChar = '|';
-		}
-	} else { //处理全新作品，默认显示打字效果
-		str_cursorChar = '❤';
-	}
-	//判断用户有没有选择打字效果
-	if (typeof(theme_content['typed_bool']) != 'undefined' && theme_content['typed_bool'] != '') {
-		typed_bool = theme_content['typed_bool'] == 'typed_y' ? true : false;
-	} else {
-		typed_bool = false; //默认显示打字效果
-	}
-	display_pure_words();
-	$(".div_pure_words").fadeIn();
-	interval_pw_height = setInterval(function() {
-		console.log('div_pure_words_height -> ' + $('.div_pure_words_height').height());
-		var least_height_div_pw = $('.div_pure_words_height').height();
-		if (least_height_div_pw > height_div_pw) {
-			height_div_pw = least_height_div_pw;
-		} else {
-			clearInterval(interval_pw_height);
-			$(".div_pure_words_height").height(least_height_div_pw + 100);
-			if ($(".div_pure_words_height").height() < window_height) {
-				$(".div_pure_words_height").height(window_height); //不能小于窗口的高度
-				console.log('let us be high as window');
-			}
-		}
-	}, 100);
-}
-
-function display_pure_words() {
-	if (typed_bool) {
-		var typed_pure_words = new Typed('#span_pw_typed', {
-			strings: [pure_words_content],
-			//输入内容, 支持html标签
-			typeSpeed: 120,
-			//打字速度
-			cursorChar: str_cursorChar,
-			//替换光标的样式
-			contentType: 'html',
-			//值为html时，将打印的文本标签直接解析html标签
-			onComplete: function(abc) {
-				// console.log(abc); 
-				console.log('finished typing words');
-				// console.log($('#span_pw_typed').height()-$(".div_pure_words_height").height());
-			},
-		});
-	} else {
-		//如果不需要打字效果就直接显示
-		$("#span_pw_typed").html(pure_words_content).fadeIn();
-	}
-	init_attachment();
-}
-var start_content = {
-	chase_title: "李小宝儿子❤️杨春丽母亲<um style='color: #F44336;'>💕</um>",
-	chase_text: "承蒙你的出现，够我喜欢好多年，我希望，以后你能用我的名字拒绝所有人<um style='color: #F44336;'>💕</um>",
-	chase_benefit: ["你是我拔掉氧气罐都想吻的人", "你是我跑完8000米还想拥抱的人", "你是我自罚三杯都不肯开口的秘密", "你是我赴汤蹈火都不肯放下的执着", "你是我电量只剩1%也想回信息的人", "你是我穷极一生不想醒来的梦"],
-	bg_style: "bg_custom",
-	bg_img: "images/2.jpg",
-	img_bool: "img_true",
-	img_src: "images/1.gif"
-}; //可能为null
-console.log(start_content);
-var start_id;
-$(function() {
-	//此事件为触发互动创意
-	start_id = 'onlyyou'; //可能为null
-	init_start(start_id);
-});
-function init_start(start_id) {
-	console.log('init_start ->' + start_id);
-	switch (start_id) {
-	case 'loveformat':
-		$('.div_loveformat').show();
-		init_loveformat();
-		break;
-	case 'hearttree':
-		$('#div_hearttree').show();
-		init_hearttree();
-		break;
-	case 'courage':
-		$('#div_courage').show();
-		init_courage();
-		break;
-	case 'birthdaycake':
-		$('#div_dbcake').show();
-		init_birthdaycake();
-		break;
-	case 'intersect':
-		$('#div_intersect').show();
-		init_intersect();
-		break;
-	case 'onlyyou':
-		$('#div_onlyyou').show();
-		init_onlyyou();
-		break;
-	default:
-		init_theme();
-	}
-}
-//开始动画主体部分
-function init_theme() {
-	console.log('init_theme');
-	$('#div_start_bg').fadeOut();
-	init_pure_words();
-}
-var attachment = 'null'; //可能为null
-var attached_content = {
-	"bool_save": false
-}; //可能为null
-console.log(attached_content);
-
-function init_attachment() { //开始attachment
-	console.log('init_attachment ->' + attachment);
-	switch (attachment) {
-	case 'timer':
-		init_at_timer();
-		break;
-	default:
-		return;
-	}
-}
-</script>
-<!-- JQuery -->
-<script src="js/typed.min.js"></script>
-<script src="js/start_onlyyou.js"></script>
-<script src="js/jweixin-1.2.0.js"></script>
-<script src='js/theme_common.js'></script>
-<script language='JavaScript'>$.getScript('https://s4.cnzz.com/z_stat.php?id=1278559043&web_id=1278559043')</script>
-</body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <title>哔哩哔哩 (゜-゜)つロ 干杯~-bilibili</title>
+    <meta name="description" content="bilibili是国内知名的视频弹幕网站，这里有及时的动漫新番，活跃的ACG氛围，有创意的Up主。大家可以在这里找到许多欢乐。">
+    <meta name="keywords" content="Bilibili,哔哩哔哩,哔哩哔哩动画,哔哩哔哩弹幕网,弹幕视频,B站,弹幕,字幕,AMV,MAD,MTV,ANIME,动漫,动漫音乐,游戏,游戏解说,二次元,游戏视频,ACG,galgame,动画,番组,新番,初音,洛天依,vocaloid,日本动漫,国产动漫,手机游戏,网络游戏,电子竞技,ACG燃曲,ACG神曲,追新番,新番动漫,新番吐槽,巡音,镜音双子,千本樱,初音MIKU,舞蹈MMD,MIKUMIKUDANCE,洛天依原创曲,洛天依翻唱曲,洛天依投食歌,洛天依MMD,vocaloid家族,OST,BGM,动漫歌曲,日本动漫音乐,宫崎骏动漫音乐,动漫音乐推荐,燃系mad,治愈系mad,MAD MOVIE,MAD高燃">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="spm_prefix" content="333.1007">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="dns-prefetch" href="https://s1.hdslb.com/">
+    <link rel="apple-touch-icon" href="https://static.hdslb.com/mobile/img/512.png">
+    <link rel="shortcut icon" href="https://www.bilibili.com/favicon.ico?v=1">
+    <link rel="stylesheet" href="static/css/medium.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="static/css/regular.css" media="print" onload="this.media='all'">
+    <style>.old-browser-tip .title{background:#00a1d6;text-align:center;padding:10px 0;color:#fff}</style>
+    
+  <link rel="stylesheet" href="static/css/map1.css">
+  <link rel="stylesheet" href="static/css/light_u1.css">
+  <link id="__css-map__" rel="stylesheet" href="static/css/light1.css">
+  
+    <script>window.__SERVER_CONFIG__={"serverBuvid":"","isModern":true};</script>
+    <script src="static/js/svgfont.7808ccc1.js" async=""></script><script type="text/javascript">
+      window.__video_core_version = 'https://s1.hdslb.com/bfs/static/player/main/core.67de27fd.js'
+    </script>
+    <script type="text/javascript">
+      (function () {
+        var ua = window.navigator.userAgent,
+          agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPod'],
+          isPC = true;
+        if(/\sVR\s/g.test(ua)) return
+        for (var i = 0, len = agents.length; i < len; i++) {
+          if (ua.indexOf(agents[i]) > 0) {
+            isPC = false;
+            break;
+          }
+        }
+        if (!isPC) {
+          window.location.href = window.location.href.replace('www', 'm');
+        }
+      })();
+    </script>
+    <script type="text/javascript">
+      window.spmReportData = {}
+      window.reportConfig = {
+        sample: 1,
+        msgObjects: 'spmReportData',
+        errorTracker: true
+      }
+      function getCookie(name){var reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");var r=document.cookie.match(reg);return r?unescape(r[2]):null;}
+      function fsrCb(){if(window.performance&&window.performance.timing){window.performance.timing.firstscreenfinish=new Date().getTime()}}
+      function lqipCb(img){var lqip = img && img.parentNode && img.parentNode.querySelector('.lqip');if (lqip) {lqip.classList.add('is-active')}}
+      if(history.scrollRestoration){history.scrollRestoration='manual'}
+      if(!window.abtest){window.abtest={home_b_nut:getCookie('b_nut'),b_ut:getCookie('b_ut')}}
+    </script>
+    <script type="text/javascript" src="static/js/log-reporter1.js" async=""></script>
+    <!--preload-fetch-->
+    
+    <script type="module" crossorigin="" src="static/js/index.4a408ae5.js"></script>
+    <link rel="modulepreload" href="https://s1.hdslb.com/bfs/static/laputa-home/client/assets/vendor.fca2862d.js">
+    <link rel="stylesheet" href="static/css/index.12ea3957.css">
+  </head>
+  <body>
+    <div class="old-browser-tip"></div>
+    <script>
+      if(window.__SERVER_CONFIG__&&window.__SERVER_CONFIG__.isModern===false){document.querySelector('.old-browser-tip').innerHTML='<div class="title">当前浏览器版本较低，为保证您的使用体验，建议使用最新版本的浏览器访问。</div>'}
+      if(/(Mac|iPhone|iPod|iPad)/i.test(window.navigator.platform)){document.body.classList.add('mac')}else{document.body.classList.add('win')}
+    </script>
+    <div id="i_cecream"><!--[--><div class="bili-header large-header"><!-- 顶部 --><div class="bili-header__bar"><!-- 左侧入口--><ul class="left-entry"><li><a href="" class="entry-title"><svg width="18" height="18" viewbox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="zhuzhan-icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.73252 2.67094C3.33229 2.28484 3.33229 1.64373 3.73252 1.25764C4.11291 0.890684 4.71552 0.890684 5.09591 1.25764L7.21723 3.30403C7.27749 3.36218 7.32869 3.4261 7.37081 3.49407H10.5789C10.6211 3.4261 10.6723 3.36218 10.7325 3.30403L12.8538 1.25764C13.2342 0.890684 13.8368 0.890684 14.2172 1.25764C14.6175 1.64373 14.6175 2.28484 14.2172 2.67094L13.364 3.49407H14C16.2091 3.49407 18 5.28493 18 7.49407V12.9996C18 15.2087 16.2091 16.9996 14 16.9996H4C1.79086 16.9996 0 15.2087 0 12.9996V7.49406C0 5.28492 1.79086 3.49407 4 3.49407H4.58579L3.73252 2.67094ZM4 5.42343C2.89543 5.42343 2 6.31886 2 7.42343V13.0702C2 14.1748 2.89543 15.0702 4 15.0702H14C15.1046 15.0702 16 14.1748 16 13.0702V7.42343C16 6.31886 15.1046 5.42343 14 5.42343H4ZM5 9.31747C5 8.76519 5.44772 8.31747 6 8.31747C6.55228 8.31747 7 8.76519 7 9.31747V10.2115C7 10.7638 6.55228 11.2115 6 11.2115C5.44772 11.2115 5 10.7638 5 10.2115V9.31747ZM12 8.31747C11.4477 8.31747 11 8.76519 11 9.31747V10.2115C11 10.7638 11.4477 11.2115 12 11.2115C12.5523 11.2115 13 10.7638 13 10.2115V9.31747C13 8.76519 12.5523 8.31747 12 8.31747Z" fill="currentColor"></path></svg><span>首页</span></a></li><!-- Fixed Header 分区引导 --><!-- headerSlideDown === 1 ||  --><!--v-if--><!-- 番剧、游戏中心、直播、会员购、漫画 + 2个运营位 --><!--[--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index1.html" target="_blank" class="default-entry"><span>番剧</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index2.html" target="_blank" class="default-entry"><span>直播</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index3.html" target="_blank" class="default-entry"><span>游戏中心</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="home.html" target="_blank" class="default-entry"><span>会员购</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index4.html" target="_blank" class="default-entry"><span>漫画</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index5.html" target="_blank" class="default-entry"><span>赛事</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><!--v-if--><!-- loc 资源位 --><!--[--><!-- Header 左侧 资源位 --><!--v-if--><!--]--><!--]--><!--[--><!-- 固定资源位 --><!--v-if--><!-- loc 资源位 --><!--[--><!-- Header 左侧 资源位 --><!--v-if--><!--]--><!--]--><!--]--><!-- 下载APP --><li class="v-popover-wrap"><!--[--><a href="index6.html" target="_blank" class="download-entry"><svg width="17" height="16" viewbox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="download-entry__icon"><path d="M14.9752 8.76432C15.6917 8.76432 16.2725 9.31186 16.2725 9.98725V14.7771C16.2725 15.4525 15.6917 16 14.9752 16H10.3806C9.6641 16 9.08327 15.4525 9.08327 14.7771V9.98725C9.08327 9.31186 9.6641 8.76432 10.3806 8.76432H14.9752ZM1.08329 11.465C1.53108 11.465 1.8941 11.8072 1.8941 12.2293V15.0828C1.8941 15.5049 1.53108 15.8471 1.08329 15.8471C0.635485 15.8471 0.272481 15.5049 0.272481 15.0828V12.2293C0.272481 11.8072 0.635485 11.465 1.08329 11.465ZM6.7049 11.465C7.15271 11.465 7.51571 11.8072 7.51571 12.2293V15.0828C7.51571 15.5049 7.15271 15.8471 6.7049 15.8471C6.25709 15.8471 5.89409 15.5049 5.89409 15.0828V12.2293C5.89409 11.8072 6.25709 11.465 6.7049 11.465ZM3.89409 12.1274C4.34189 12.1274 4.7049 12.4696 4.7049 12.8917V14.4204C4.7049 14.8425 4.34189 15.1847 3.89409 15.1847C3.4463 15.1847 3.08328 14.8425 3.08328 14.4204V12.8917C3.08328 12.4696 3.4463 12.1274 3.89409 12.1274ZM14.6508 10.293H10.7049V14.4713H14.6508V10.293ZM6.7049 8.76432C7.15271 8.76432 7.51571 9.10654 7.51571 9.52865C7.51571 9.95079 7.15271 10.293 6.7049 10.293H1.08327C0.635504 10.293 0.272461 9.95079 0.272461 9.52865C0.272461 9.10654 0.635504 8.76432 1.08327 8.76432H6.7049ZM6.16435 0C6.88084 0 7.46165 0.547516 7.46165 1.22293V6.01273C7.46165 6.68814 6.88084 7.23566 6.16435 7.23566H1.56978C0.853291 7.23566 0.272481 6.68814 0.272481 6.01273V1.22293C0.272481 0.547516 0.853291 0 1.56978 0H6.16435ZM14.9752 0C15.6917 0 16.2725 0.547516 16.2725 1.22293V6.01273C16.2725 6.68814 15.6917 7.23566 14.9752 7.23566H10.3806C9.6641 7.23566 9.08327 6.68814 9.08327 6.01273V1.22293C9.08327 0.547516 9.6641 0 10.3806 0H14.9752ZM5.84003 1.52866H1.8941V5.707H5.84003V1.52866ZM14.6508 1.52866H10.7049V5.707H14.6508V1.52866Z" fill="currentColor"></path></svg><span>下载APP</span></a><!--]--><!----></li></ul><!-- 搜索位 --><div class="center-search-container"><div class="center-search__bar"><!-- 搜索框 --><form id="nav-searchform" class="" style="border-radius:8px 8px 8px 8px;"><input class="nav-search-input" type="text" autocomplete="off" accesskey="s" maxlength="100" x-webkit-speech="" x-webkit-grammar="builtin:translate" value="" placeholder="" title=""><div class="nav-search-btn"><svg width="17" height="17" viewbox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.3451 15.2003C16.6377 15.4915 16.4752 15.772 16.1934 16.0632C16.15 16.1279 16.0958 16.1818 16.0525 16.2249C15.7707 16.473 15.4456 16.624 15.1854 16.3652L11.6848 12.8815C10.4709 13.8198 8.97529 14.3267 7.44714 14.3267C3.62134 14.3267 0.5 11.2314 0.5 7.41337C0.5 3.60616 3.6105 0.5 7.44714 0.5C11.2729 0.5 14.3943 3.59538 14.3943 7.41337C14.3943 8.98802 13.8524 10.5087 12.8661 11.7383L16.3451 15.2003ZM2.13647 7.4026C2.13647 10.3146 4.52083 12.6766 7.43624 12.6766C10.3517 12.6766 12.736 10.3146 12.736 7.4026C12.736 4.49058 10.3517 2.1286 7.43624 2.1286C4.50999 2.1286 2.13647 4.50136 2.13647 7.4026Z" fill="currentColor"></path></svg></div></form><div class="search-panel" style="display:none;"><!--v-if--><!--v-if--><!--v-if--></div></div></div><!-- 右侧入口 --><div class="mini-header-right-loading"></div></div><!-- Banner 图 --><div class="bili-header__banner" style="background-image:url(static/image/b60151347754f0089489d7d68271233960a8d52f.png);"><!-- 动态版头 --><!--v-if--><!-- 渐变层 --><div class="taper-line"></div><div class="header-banner__inner"><!-- bilibili Logo --><a href="" class="inner-logo"><img class="logo-img" width="162" height="78" src="static/picture/9e5f278027ae7f1e1933b6e4002870361da6c20b.png"></a><!-- tooltip text --><!--v-if--></div><!-- 版头链接 --><!--v-if--></div><!-- 分区 --><!----></div><!----><main class="bili-layout"><!--[--><!--]--></main><!----><!--]--></div>
+    
+    <script>window.__INITIAL_DATA__=[{"request":{"url":"http:\u002F\u002Fapi.bilibili.com\u002Fx\u002Fweb-show\u002Fpage\u002Fheader?resource_id=142","config":{"preload":true,"com2co":true,"discovery":"main.web-svr.web-show","method":"GET","credentials":"include"}},"response":{"name":"","pic":"http:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Farchive\u002Fb60151347754f0089489d7d68271233960a8d52f.png","litpic":"http:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Farchive\u002F9e5f278027ae7f1e1933b6e4002870361da6c20b.png","url":"","is_split_layer":1,"split_layer":"{\"version\":\"1\",\"layers\":[{\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002Fc859df1f4a77f06b5d388c10b7533efb89739dcf.mp4\",\"id\":0}],\"scale\":{\"initial\":0.88},\"rotate\":{},\"translate\":{\"offset\":[10,0]},\"blur\":{},\"opacity\":{\"wrap\":\"clamp\"},\"id\":6,\"name\":\"图层6\"},{\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002F839af78322450ea0eb6dbb1d19889d831862804f.png\",\"id\":0}],\"scale\":{\"initial\":0.87},\"rotate\":{},\"translate\":{\"offset\":[20,0]},\"blur\":{},\"opacity\":{\"wrap\":\"clamp\"},\"id\":8,\"name\":\"图层8\"}],\"extensions\":{\"time\":{\"0\":[{\"version\":\"1\",\"layers\":[{\"id\":0,\"name\":\"图层0\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002Fb1208c03b700ad86b5580e13990b4cac5420448f.mp4\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[10,0]}},{\"id\":1,\"name\":\"图层1\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002F5f18bd9e0b4fff738eaf6ebdc3c5c1477b5ea592.png\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[20,0]}}]}],\"21600\":[{\"version\":\"1\",\"layers\":[{\"id\":6,\"name\":\"图层6\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002Fc859df1f4a77f06b5d388c10b7533efb89739dcf.mp4\",\"id\":0}],\"scale\":{\"initial\":0.88},\"translate\":{\"offset\":[10,0]}},{\"id\":8,\"name\":\"图层8\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002F839af78322450ea0eb6dbb1d19889d831862804f.png\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[20,0]}}]}],\"68400\":[{\"version\":\"1\",\"layers\":[{\"id\":0,\"name\":\"图层0\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002Fb1208c03b700ad86b5580e13990b4cac5420448f.mp4\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[10,0]}},{\"id\":1,\"name\":\"图层1\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002F5f18bd9e0b4fff738eaf6ebdc3c5c1477b5ea592.png\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[20,0]}}]}]}}}","request_id":"1634233320"}}]</script>
+    <script type="text/javascript" src="static/js/pc.js"></script>
+  </body>
 </html>

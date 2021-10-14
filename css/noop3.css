@@ -1,0 +1,97 @@
+.agile-toast-wrap[data-v-699129e9] {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: block;
+  padding: 0 20px;
+  height: 36px;
+  line-height: 36px;
+  text-align: left;
+  white-space: nowrap;
+  font-size: 16px;
+  letter-spacing: 0;
+  font-weight: normal;
+  color: #fff;
+  background: #32cd32;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px 0 rgba(0,0,0,0.15);
+  box-sizing: border-box;
+  transition: all 0.35s;
+  z-index: 2001;
+}
+.agile-toast-wrap.center[data-v-699129e9] {
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+.agile-toast-wrap.center.show[data-v-699129e9] {
+  -webkit-animation: toast-center-appear-data-v-699129e9 0.35s ease-in-out 1 both;
+          animation: toast-center-appear-data-v-699129e9 0.35s ease-in-out 1 both;
+}
+.agile-toast-wrap.center.hidden[data-v-699129e9] {
+  -webkit-animation: toast-center-disappear-data-v-699129e9 0.35s ease-in-out 1 both;
+          animation: toast-center-disappear-data-v-699129e9 0.35s ease-in-out 1 both;
+}
+.agile-toast-wrap.show[data-v-699129e9] {
+  -webkit-animation: toast-appear-data-v-699129e9 0.35s ease-in-out 1 both;
+          animation: toast-appear-data-v-699129e9 0.35s ease-in-out 1 both;
+}
+.agile-toast-wrap.hidden[data-v-699129e9] {
+  -webkit-animation: toast-disappear-data-v-699129e9 0.35s ease-in-out 1 both;
+          animation: toast-disappear-data-v-699129e9 0.35s ease-in-out 1 both;
+}
+.agile-toast-wrap.error[data-v-699129e9] {
+  background-color: #e36857;
+}
+.agile-toast-wrap.warning[data-v-699129e9] {
+  background-color: #ff8c00;
+}
+@-webkit-keyframes toast-appear-data-v-699129e9 {
+from {
+    opacity: 0;
+    transform: translate3d(0, 50%, 0);
+}
+}
+@keyframes toast-appear-data-v-699129e9 {
+from {
+    opacity: 0;
+    transform: translate3d(0, 50%, 0);
+}
+}
+@-webkit-keyframes toast-disappear-data-v-699129e9 {
+to {
+    opacity: 0;
+    transform: translate3d(0, -50%, 0);
+}
+}
+@keyframes toast-disappear-data-v-699129e9 {
+to {
+    opacity: 0;
+    transform: translate3d(0, -50%, 0);
+}
+}
+@-webkit-keyframes toast-center-appear-data-v-699129e9 {
+from {
+    opacity: 0;
+    transform: translate3d(-50%, 50%, 0);
+}
+}
+@keyframes toast-center-appear-data-v-699129e9 {
+from {
+    opacity: 0;
+    transform: translate3d(-50%, 50%, 0);
+}
+}
+@-webkit-keyframes toast-center-disappear-data-v-699129e9 {
+to {
+    opacity: 0;
+    transform: translate3d(-50%, -70%, 0);
+}
+}
+@keyframes toast-center-disappear-data-v-699129e9 {
+to {
+    opacity: 0;
+    transform: translate3d(-50%, -70%, 0);
+}
+}
+

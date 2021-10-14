@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>checkbox_selcted</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="承包成功" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-510.000000, -550.000000)">
+        <g id="充电成功" transform="translate(246.000000, 275.000000)" fill="#F6B32B">
+            <g id="Group-15" transform="translate(264.000000, 272.000000)">
+                <g id="checkbox_selcted" transform="translate(0.000000, 3.000000)">
+                    <path d="M5.25,8.3125 L4.2,7.2625 C3.85,6.9125 3.2375,6.9125 2.8875,7.2625 C2.5375,7.6125 2.5375,8.1375 2.8875,8.575 L4.55,10.2375 C4.73560961,10.4231096 4.99504262,10.510288 5.25,10.4990352 C5.50495738,10.510288 5.76439039,10.4231096 5.95,10.2375 L11.1125,5.075 C11.4625,4.725 11.4625,4.1125 11.1125,3.7625 C10.7625,3.4125 10.15,3.4125 9.8,3.7625 L5.25,8.3125 Z M2,0 L12,-2.22044605e-16 C13.1045695,5.56104062e-16 14,0.8954305 14,2 L14,12 C14,13.1045695 13.1045695,14 12,14 L2,14 C0.8954305,14 8.94280938e-16,13.1045695 -2.22044605e-16,12 L-2.22044605e-16,2 C-3.57315355e-16,0.8954305 0.8954305,-1.91384796e-17 2,-2.22044605e-16 Z" id="checkbox_selected"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

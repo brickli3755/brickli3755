@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="zh-Hans"><head>
+    <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
+    <meta httpequiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit">
+    <link rel="dns-prefetch" href="https://s1.hdslb.com/">
+    <link rel="dns-prefetch" href="https://i0.hdslb.com/">
+    <link rel="dns-prefetch" href="https://i1.hdslb.com/">
+    <link rel="dns-prefetch" href="https://i2.hdslb.com/">
+    <link rel="dns-prefetch" href="https://static.hdslb.com/">
+    <link rel="dns-prefetch" href="https://activity.hdslb.comm/">
+    <meta name="applicable-device" content="mobile">
+    <meta name="theme-color" content="#de698c">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="force-rendering" content="webkit">
+    <meta name="full-screen" content="true">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="apple-touch-icon" href="https://www.bilibili.com/favicon.ico">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="https://www.bilibili.com/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="https://static.hdslb.com/mobile/img/512.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <script type="text/javascript" src="static/js/vue.min1.js" crossorigin="anonymous"></script>
+    <script>
+    (function() {
+      var result = null;
+      var doc = document.documentElement;
+      var uiWidth = 750;
+      var font = 100;
+      var bili = uiWidth / font;
+
+      function fontInit () {
+        var screenWidth = doc.offsetWidth;
+      
+        if (screenWidth >= uiWidth) {
+          result = font;
+        } else if (screenWidth <= 320) {
+          result = 320 / bili;
+        } else {
+          result = screenWidth / bili;
+        }
+        result = Math.ceil(result * 100) / 100;
+      
+        doc.style.fontSize = result + "px";
+        var htmlSize = window.getComputedStyle(document.getElementsByTagName('html')[0]).fontSize.replace('px', '');
+      
+        if (result !== htmlSize) {
+          doc.style.fontSize = result * (result / htmlSize) + "px";
+        }
+      }
+      fontInit();
+      window.addEventListener("resize", fontInit);
+    }())
+    </script>
+  
+<script>
+// change ua
+(function() {
+  if (location.search.indexOf('plat=h5') > -1 && location.search.indexOf('__activity-plat-preview=1') > -1) {
+    Object.defineProperty(window.navigator, 'userAgent', {
+      value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
+      configurable: true
+    });
+    console.info(window.navigator);
+  }
+})();
+
+</script>
+
+<script>
+!function(global){
+  if (
+    /\/preview\//.test(global.location.href) || global.location.search.indexOf('__activity-plat-preview=1') >= 0
+  ) {
+    return false;
+  }
+  var ua = navigator.userAgent;
+  var isSymbian = /(?:SymbianOS)/.test(ua) || /(?:Windows Phone)/.test(ua);
+  var isAndroid = /(?:Android)/.test(ua);
+  var isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (/(?:Firefox)/.test(ua) && /(?:Tablet)/.test(ua));
+  var isPhone = /(?:iPhone)/.test(ua) && !isTablet;
+  
+  var isMobile = isPhone || isAndroid || isSymbian;
+  var isPc = !isMobile;
+
+  var jumpUrl = 'https://live.bilibili.com/blackboard/activity-Ipes2c9eQk.html';
+  var plat = 'H5'
+
+  if (jumpUrl.indexOf(global.location.host + global.location.pathname) !== -1) {
+    return false;
+  }
+
+  if (
+    (plat === 'H5' && (isPc && !isTablet)) ||
+    (plat === 'PC' && (isMobile || isTablet))
+  ) {
+    global.location.href = jumpUrl + (jumpUrl.indexOf('?') > -1 ? '' : window.location.search + window.location.hash);
+  }
+}(window);
+</script>
+<title>直播打卡计划</title><meta name="keywords" content=""><meta name="description" content=""><meta name="spm_prefix" content="888.48016"><script src="static/js/activity-report.js"></srcipt></script><script src="static/js/log-reporter.js"></script>
+      <script type="text/javascript">
+        var msource;
+        try {
+          var u = new URL(location.href);
+          var sp = u.searchParams;
+          msource = sp.get('msource') || sp.get('from') || sp.get('source_from') || sp.get('from_module')
+        }
+        catch(e){console.warn('get page source from query failed', e)}
+        window.activity = {id: 6506, spmId: '888.48016'};
+        window.reportMsgObj = {};
+        
+        var ua = window.navigator.userAgent
+        var buvidMatch = ua.match(/Buvid\/([a-zA-Z0-9]+)/)
+        var appBuvid = buvidMatch && buvidMatch.length > 0 ? buvidMatch[1] : ''
+        window.reportConfig = {
+          sample: 1,
+          extMsgs: {
+            appBuvid: appBuvid,
+          },
+          scrollTracker: true,
+          msgObjects: 'reportMsgObj',
+          pvMsg: {msource: msource},
+          errorTracker: true
+        };
+      </script>
+    </head>
+  <body>
+    <div id="app" class="tpl-wrap"></div>
+    <div id="script"></div>
+<script>window.__dynamicTs = 1634192653295</script>
+<script src="static/js/core.js" crossorigin="anonymous"></script>
+<script src="static/js/base.js" crossorigin="anonymous"></script>
+
+<script>
+  window.__BILIACT_ENV__ = "H5";
+  window.__initialState = {"baseChildren":["Base_participation","Base_setting","Base_head","Base_hover_button"],"modules":{},"structure":{"root":{"id":"root","children":["D-init-area-click","D_sfVF_nG9p","D_Dmxu6oQuup","D_eGBohXzSd9","D_cv2RyxnNn1","D_QF8OI0BqWo","D_DDtpyJhojt","D_XMTK5lAsiI"]}},"ver":"1634192653199-admin"};
+
+  window.__BILIACT_MODULES__ = {};
+  window.__BILIACT_STRUCTURE__ = {}
+  </script>
+
+  
+
+</body></html>
