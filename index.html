@@ -1,75 +1,940 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8">
-    <title>哔哩哔哩 (゜-゜)つロ 干杯~-bilibili</title>
-    <meta name="description" content="bilibili是国内知名的视频弹幕网站，这里有及时的动漫新番，活跃的ACG氛围，有创意的Up主。大家可以在这里找到许多欢乐。">
-    <meta name="keywords" content="Bilibili,哔哩哔哩,哔哩哔哩动画,哔哩哔哩弹幕网,弹幕视频,B站,弹幕,字幕,AMV,MAD,MTV,ANIME,动漫,动漫音乐,游戏,游戏解说,二次元,游戏视频,ACG,galgame,动画,番组,新番,初音,洛天依,vocaloid,日本动漫,国产动漫,手机游戏,网络游戏,电子竞技,ACG燃曲,ACG神曲,追新番,新番动漫,新番吐槽,巡音,镜音双子,千本樱,初音MIKU,舞蹈MMD,MIKUMIKUDANCE,洛天依原创曲,洛天依翻唱曲,洛天依投食歌,洛天依MMD,vocaloid家族,OST,BGM,动漫歌曲,日本动漫音乐,宫崎骏动漫音乐,动漫音乐推荐,燃系mad,治愈系mad,MAD MOVIE,MAD高燃">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="spm_prefix" content="333.1007">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <link rel="dns-prefetch" href="https://s1.hdslb.com/">
-    <link rel="apple-touch-icon" href="https://static.hdslb.com/mobile/img/512.png">
-    <link rel="shortcut icon" href="https://www.bilibili.com/favicon.ico?v=1">
-    <link rel="stylesheet" href="static/css/medium.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="static/css/regular.css" media="print" onload="this.media='all'">
-    <style>.old-browser-tip .title{background:#00a1d6;text-align:center;padding:10px 0;color:#fff}</style>
-    
-  <link rel="stylesheet" href="static/css/map1.css">
-  <link rel="stylesheet" href="static/css/light_u1.css">
-  <link id="__css-map__" rel="stylesheet" href="static/css/light1.css">
-  
-    <script>window.__SERVER_CONFIG__={"serverBuvid":"","isModern":true};</script>
-    <script src="static/js/svgfont.7808ccc1.js" async=""></script><script type="text/javascript">
-      window.__video_core_version = 'https://s1.hdslb.com/bfs/static/player/main/core.67de27fd.js'
-    </script>
-    <script type="text/javascript">
-      (function () {
-        var ua = window.navigator.userAgent,
-          agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPod'],
-          isPC = true;
-        if(/\sVR\s/g.test(ua)) return
-        for (var i = 0, len = agents.length; i < len; i++) {
-          if (ua.indexOf(agents[i]) > 0) {
-            isPC = false;
-            break;
-          }
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HTML5人体坠落动画代码 - 源码之家</title>
+
+<style>
+html,body {
+	overflow:hidden;
+	touch-action:none;
+	position:absolute;
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+	background:#000;
+}
+canvas {
+	position:absolute;
+	width:100%;
+	height:100%;
+	user-select:none;
+	background:#000;
+}
+</style>
+
+</head>
+<body>
+
+<div></div>
+
+<script>
+"use strict";
+class World {
+    constructor(setup) {
+        this.DEBUG = setup.DEBUG || false;
+        this.gravity = setup.gravity || 50;
+        this.iterations = setup.iterations || 10;
+        this.timeStep = setup.timeStep || 1 / 30;
+        this.invDT = 1 / this.timeStep;
+        this.friction = setup.friction || 0.2;
+        this.allowedPenetration = setup.allowedPenetration || 0.01;
+        this.biasFactor = setup.biasFactor || 0.2;
+        this.relativeTol = setup.relativeTol || 0.95;
+        this.absoluteTol = setup.absoluteTol || 0.01;
+        this.maxy = setup.maxy || 100000;
+        this.shapes = {};
+        this.bodies = [];
+        this.joints = [];
+        this.contacts = [];
+        this.numContacts = 0;
+        this.maxContacts = 0;
+        this.ie = [vec(), vec()];
+        this.c1 = [vec(), vec()];
+        this.c2 = [vec(), vec()];
+        this.bodyCount = 0;
+        this.jointsCount = 0;
+        this.dp = vec();
+        this.n = vec();
+        this.fn = vec();
+        this.sn = vec();
+    }
+    addBody(setup) {
+        const body = new World.Body(this, setup);
+        this.bodies.push(body);
+        this.bodyCount = this.bodies.length;
+        return body;
+    }
+    addJoint(setup) {
+        let joint = new World.Joint(this, setup);
+        this.joints.push(joint);
+        this.jointsCount = this.joints.length;
+        return joint;
+    }
+    addShape(setup) {
+        const shape = new World.Shape(setup);
+        this.shapes[setup.id] = shape;
+        return shape;
+    }
+    removeBody(body) {
+        for (let i = 0; i < this.bodyCount; ++i) {
+            if (this.bodies[i] === body) {
+                this.bodies.splice(i, 1);
+                for (let j = 0; j < this.jointsCount; ++j) {
+                    const joint = this.joints[j];
+                    if (joint.bA === body || joint.bB === body) {
+                        this.joints.splice(j, 1);
+                        this.jointsCount--;
+                        j--;
+                    }
+                }
+                break;
+            }
         }
-        if (!isPC) {
-          window.location.href = window.location.href.replace('www', 'm');
+        this.bodyCount = this.bodies.length;
+    }
+    step() {
+        let i, j, bi, bj, d, ct;
+        this.numContacts = 0;
+        for (i = 0; i < this.bodyCount; ++i) {
+            bi = this.bodies[i];
+            for (j = i + 1; j < this.bodyCount; ++j) {
+                bj = this.bodies[j];
+                if (bi.iM || bj.iM) {
+                    this.dp.subFrom(bj.p, bi.p);
+                    d = bi.rd + bj.rd;
+                    if (this.dp.sqlen() < d * d) {
+                        if (!bi.nocontact.includes(bj)) {
+                            this.collide(bi, bj, this.dp);
+                        }
+                    }
+                }
+            }
         }
-      })();
-    </script>
-    <script type="text/javascript">
-      window.spmReportData = {}
-      window.reportConfig = {
-        sample: 1,
-        msgObjects: 'spmReportData',
-        errorTracker: true
-      }
-      function getCookie(name){var reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");var r=document.cookie.match(reg);return r?unescape(r[2]):null;}
-      function fsrCb(){if(window.performance&&window.performance.timing){window.performance.timing.firstscreenfinish=new Date().getTime()}}
-      function lqipCb(img){var lqip = img && img.parentNode && img.parentNode.querySelector('.lqip');if (lqip) {lqip.classList.add('is-active')}}
-      if(history.scrollRestoration){history.scrollRestoration='manual'}
-      if(!window.abtest){window.abtest={home_b_nut:getCookie('b_nut'),b_ut:getCookie('b_ut')}}
-    </script>
-    <script type="text/javascript" src="static/js/log-reporter1.js" async=""></script>
-    <!--preload-fetch-->
-    
-    <script type="module" crossorigin="" src="static/js/index.4a408ae5.js"></script>
-    <link rel="modulepreload" href="https://s1.hdslb.com/bfs/static/laputa-home/client/assets/vendor.fca2862d.js">
-    <link rel="stylesheet" href="static/css/index.12ea3957.css">
-  </head>
-  <body>
-    <div class="old-browser-tip"></div>
-    <script>
-      if(window.__SERVER_CONFIG__&&window.__SERVER_CONFIG__.isModern===false){document.querySelector('.old-browser-tip').innerHTML='<div class="title">当前浏览器版本较低，为保证您的使用体验，建议使用最新版本的浏览器访问。</div>'}
-      if(/(Mac|iPhone|iPod|iPad)/i.test(window.navigator.platform)){document.body.classList.add('mac')}else{document.body.classList.add('win')}
-    </script>
-    <div id="i_cecream"><!--[--><div class="bili-header large-header"><!-- 顶部 --><div class="bili-header__bar"><!-- 左侧入口--><ul class="left-entry"><li><a href="" class="entry-title"><svg width="18" height="18" viewbox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="zhuzhan-icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.73252 2.67094C3.33229 2.28484 3.33229 1.64373 3.73252 1.25764C4.11291 0.890684 4.71552 0.890684 5.09591 1.25764L7.21723 3.30403C7.27749 3.36218 7.32869 3.4261 7.37081 3.49407H10.5789C10.6211 3.4261 10.6723 3.36218 10.7325 3.30403L12.8538 1.25764C13.2342 0.890684 13.8368 0.890684 14.2172 1.25764C14.6175 1.64373 14.6175 2.28484 14.2172 2.67094L13.364 3.49407H14C16.2091 3.49407 18 5.28493 18 7.49407V12.9996C18 15.2087 16.2091 16.9996 14 16.9996H4C1.79086 16.9996 0 15.2087 0 12.9996V7.49406C0 5.28492 1.79086 3.49407 4 3.49407H4.58579L3.73252 2.67094ZM4 5.42343C2.89543 5.42343 2 6.31886 2 7.42343V13.0702C2 14.1748 2.89543 15.0702 4 15.0702H14C15.1046 15.0702 16 14.1748 16 13.0702V7.42343C16 6.31886 15.1046 5.42343 14 5.42343H4ZM5 9.31747C5 8.76519 5.44772 8.31747 6 8.31747C6.55228 8.31747 7 8.76519 7 9.31747V10.2115C7 10.7638 6.55228 11.2115 6 11.2115C5.44772 11.2115 5 10.7638 5 10.2115V9.31747ZM12 8.31747C11.4477 8.31747 11 8.76519 11 9.31747V10.2115C11 10.7638 11.4477 11.2115 12 11.2115C12.5523 11.2115 13 10.7638 13 10.2115V9.31747C13 8.76519 12.5523 8.31747 12 8.31747Z" fill="currentColor"></path></svg><span>首页</span></a></li><!-- Fixed Header 分区引导 --><!-- headerSlideDown === 1 ||  --><!--v-if--><!-- 番剧、游戏中心、直播、会员购、漫画 + 2个运营位 --><!--[--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index1.html" target="_blank" class="default-entry"><span>番剧</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index2.html" target="_blank" class="default-entry"><span>直播</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index3.html" target="_blank" class="default-entry"><span>游戏中心</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="home.html" target="_blank" class="default-entry"><span>会员购</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index4.html" target="_blank" class="default-entry"><span>漫画</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><li class="v-popover-wrap"><!--[--><a href="index5.html" target="_blank" class="default-entry"><span>赛事</span></a><!--]--><!----></li><!-- loc 资源位 --><!--v-if--><!--]--><!--[--><!-- 固定资源位 --><!--v-if--><!-- loc 资源位 --><!--[--><!-- Header 左侧 资源位 --><!--v-if--><!--]--><!--]--><!--[--><!-- 固定资源位 --><!--v-if--><!-- loc 资源位 --><!--[--><!-- Header 左侧 资源位 --><!--v-if--><!--]--><!--]--><!--]--><!-- 下载APP --><li class="v-popover-wrap"><!--[--><a href="index6.html" target="_blank" class="download-entry"><svg width="17" height="16" viewbox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="download-entry__icon"><path d="M14.9752 8.76432C15.6917 8.76432 16.2725 9.31186 16.2725 9.98725V14.7771C16.2725 15.4525 15.6917 16 14.9752 16H10.3806C9.6641 16 9.08327 15.4525 9.08327 14.7771V9.98725C9.08327 9.31186 9.6641 8.76432 10.3806 8.76432H14.9752ZM1.08329 11.465C1.53108 11.465 1.8941 11.8072 1.8941 12.2293V15.0828C1.8941 15.5049 1.53108 15.8471 1.08329 15.8471C0.635485 15.8471 0.272481 15.5049 0.272481 15.0828V12.2293C0.272481 11.8072 0.635485 11.465 1.08329 11.465ZM6.7049 11.465C7.15271 11.465 7.51571 11.8072 7.51571 12.2293V15.0828C7.51571 15.5049 7.15271 15.8471 6.7049 15.8471C6.25709 15.8471 5.89409 15.5049 5.89409 15.0828V12.2293C5.89409 11.8072 6.25709 11.465 6.7049 11.465ZM3.89409 12.1274C4.34189 12.1274 4.7049 12.4696 4.7049 12.8917V14.4204C4.7049 14.8425 4.34189 15.1847 3.89409 15.1847C3.4463 15.1847 3.08328 14.8425 3.08328 14.4204V12.8917C3.08328 12.4696 3.4463 12.1274 3.89409 12.1274ZM14.6508 10.293H10.7049V14.4713H14.6508V10.293ZM6.7049 8.76432C7.15271 8.76432 7.51571 9.10654 7.51571 9.52865C7.51571 9.95079 7.15271 10.293 6.7049 10.293H1.08327C0.635504 10.293 0.272461 9.95079 0.272461 9.52865C0.272461 9.10654 0.635504 8.76432 1.08327 8.76432H6.7049ZM6.16435 0C6.88084 0 7.46165 0.547516 7.46165 1.22293V6.01273C7.46165 6.68814 6.88084 7.23566 6.16435 7.23566H1.56978C0.853291 7.23566 0.272481 6.68814 0.272481 6.01273V1.22293C0.272481 0.547516 0.853291 0 1.56978 0H6.16435ZM14.9752 0C15.6917 0 16.2725 0.547516 16.2725 1.22293V6.01273C16.2725 6.68814 15.6917 7.23566 14.9752 7.23566H10.3806C9.6641 7.23566 9.08327 6.68814 9.08327 6.01273V1.22293C9.08327 0.547516 9.6641 0 10.3806 0H14.9752ZM5.84003 1.52866H1.8941V5.707H5.84003V1.52866ZM14.6508 1.52866H10.7049V5.707H14.6508V1.52866Z" fill="currentColor"></path></svg><span>下载APP</span></a><!--]--><!----></li></ul><!-- 搜索位 --><div class="center-search-container"><div class="center-search__bar"><!-- 搜索框 --><form id="nav-searchform" class="" style="border-radius:8px 8px 8px 8px;"><input class="nav-search-input" type="text" autocomplete="off" accesskey="s" maxlength="100" x-webkit-speech="" x-webkit-grammar="builtin:translate" value="" placeholder="" title=""><div class="nav-search-btn"><svg width="17" height="17" viewbox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.3451 15.2003C16.6377 15.4915 16.4752 15.772 16.1934 16.0632C16.15 16.1279 16.0958 16.1818 16.0525 16.2249C15.7707 16.473 15.4456 16.624 15.1854 16.3652L11.6848 12.8815C10.4709 13.8198 8.97529 14.3267 7.44714 14.3267C3.62134 14.3267 0.5 11.2314 0.5 7.41337C0.5 3.60616 3.6105 0.5 7.44714 0.5C11.2729 0.5 14.3943 3.59538 14.3943 7.41337C14.3943 8.98802 13.8524 10.5087 12.8661 11.7383L16.3451 15.2003ZM2.13647 7.4026C2.13647 10.3146 4.52083 12.6766 7.43624 12.6766C10.3517 12.6766 12.736 10.3146 12.736 7.4026C12.736 4.49058 10.3517 2.1286 7.43624 2.1286C4.50999 2.1286 2.13647 4.50136 2.13647 7.4026Z" fill="currentColor"></path></svg></div></form><div class="search-panel" style="display:none;"><!--v-if--><!--v-if--><!--v-if--></div></div></div><!-- 右侧入口 --><div class="mini-header-right-loading"></div></div><!-- Banner 图 --><div class="bili-header__banner" style="background-image:url(static/image/b60151347754f0089489d7d68271233960a8d52f.png);"><!-- 动态版头 --><!--v-if--><!-- 渐变层 --><div class="taper-line"></div><div class="header-banner__inner"><!-- bilibili Logo --><a href="" class="inner-logo"><img class="logo-img" width="162" height="78" src="static/picture/9e5f278027ae7f1e1933b6e4002870361da6c20b.png"></a><!-- tooltip text --><!--v-if--></div><!-- 版头链接 --><!--v-if--></div><!-- 分区 --><!----></div><!----><main class="bili-layout"><!--[--><!--]--></main><!----><!--]--></div>
-    
-    <script>window.__INITIAL_DATA__=[{"request":{"url":"http:\u002F\u002Fapi.bilibili.com\u002Fx\u002Fweb-show\u002Fpage\u002Fheader?resource_id=142","config":{"preload":true,"com2co":true,"discovery":"main.web-svr.web-show","method":"GET","credentials":"include"}},"response":{"name":"","pic":"http:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Farchive\u002Fb60151347754f0089489d7d68271233960a8d52f.png","litpic":"http:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Farchive\u002F9e5f278027ae7f1e1933b6e4002870361da6c20b.png","url":"","is_split_layer":1,"split_layer":"{\"version\":\"1\",\"layers\":[{\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002Fc859df1f4a77f06b5d388c10b7533efb89739dcf.mp4\",\"id\":0}],\"scale\":{\"initial\":0.88},\"rotate\":{},\"translate\":{\"offset\":[10,0]},\"blur\":{},\"opacity\":{\"wrap\":\"clamp\"},\"id\":6,\"name\":\"图层6\"},{\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002F839af78322450ea0eb6dbb1d19889d831862804f.png\",\"id\":0}],\"scale\":{\"initial\":0.87},\"rotate\":{},\"translate\":{\"offset\":[20,0]},\"blur\":{},\"opacity\":{\"wrap\":\"clamp\"},\"id\":8,\"name\":\"图层8\"}],\"extensions\":{\"time\":{\"0\":[{\"version\":\"1\",\"layers\":[{\"id\":0,\"name\":\"图层0\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002Fb1208c03b700ad86b5580e13990b4cac5420448f.mp4\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[10,0]}},{\"id\":1,\"name\":\"图层1\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002F5f18bd9e0b4fff738eaf6ebdc3c5c1477b5ea592.png\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[20,0]}}]}],\"21600\":[{\"version\":\"1\",\"layers\":[{\"id\":6,\"name\":\"图层6\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002Fc859df1f4a77f06b5d388c10b7533efb89739dcf.mp4\",\"id\":0}],\"scale\":{\"initial\":0.88},\"translate\":{\"offset\":[10,0]}},{\"id\":8,\"name\":\"图层8\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002F839af78322450ea0eb6dbb1d19889d831862804f.png\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[20,0]}}]}],\"68400\":[{\"version\":\"1\",\"layers\":[{\"id\":0,\"name\":\"图层0\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002Fb1208c03b700ad86b5580e13990b4cac5420448f.mp4\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[10,0]}},{\"id\":1,\"name\":\"图层1\",\"resources\":[{\"src\":\"https:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fvc\u002F5f18bd9e0b4fff738eaf6ebdc3c5c1477b5ea592.png\",\"id\":0}],\"scale\":{\"initial\":0.87},\"translate\":{\"offset\":[20,0]}}]}]}}}","request_id":"1634233320"}}]</script>
-    <script type="text/javascript" src="static/js/pc.js"></script>
-  </body>
+        for (i = 0; i < this.jointsCount; ++i) {
+            this.joints[i].preStep();
+        }
+        for (j = 0; j < this.iterations; ++j) {
+            for (i = 0; i < this.numContacts; ++i) {
+                this.contacts[i].applyImpulse();
+            }
+            for (i = 0; i < this.jointsCount; ++i) {
+                this.joints[i].applyImpulse();
+            }
+        }
+        for (i = 0; i < this.bodyCount; ++i) {
+            this.bodies[i].integrate();
+        }
+        for (i = 0; i < this.bodyCount; ++i) {
+            this.bodies[i].draw();
+        }
+    }
+    collide(bA, bB, dp) {
+        let dax = bA.cos * dp.x + bA.sin * dp.y;
+        let day = -bA.sin * dp.x + bA.cos * dp.y;
+        let dbx = bB.cos * dp.x + bB.sin * dp.y;
+        let dby = -bB.sin * dp.x + bB.cos * dp.y;
+        let m00 = Math.abs(bA.cos * bB.cos + bA.sin * bB.sin);
+        let m01 = Math.abs(-bA.sin * bB.cos + bA.cos * bB.sin);
+        let m10 = Math.abs(-bA.cos * bB.sin + bA.sin * bB.cos);
+        let m11 = Math.abs(bA.sin * bB.sin + bA.cos * bB.cos);
+        let fAx = Math.abs(dax) - bA.hw - (m00 * bB.hw + m10 * bB.hh);
+        let fAy = Math.abs(day) - bA.hh - (m01 * bB.hw + m11 * bB.hh);
+        if (fAx > 0.0 || fAy > 0.0) return;
+        let fBx = Math.abs(dbx) - bB.hw - (m00 * bA.hw + m01 * bA.hh);
+        let fBy = Math.abs(dby) - bB.hh - (m10 * bA.hw + m11 * bA.hh);
+        if (fBx > 0.0 || fBy > 0.0) return;
+        let axis = 0;
+        let separation = fAx;
+        if (dax > 0.0) this.n.set(bA.cos, bA.sin);
+        else this.n.set(-bA.cos, -bA.sin);
+        if (fAy > this.relativeTol * separation + this.absoluteTol * bA.hh) {
+            axis = 1;
+            separation = fAy;
+            if (day > 0.0) this.n.set(-bA.sin, bA.cos);
+            else this.n.set(bA.sin, -bA.cos);
+        }
+        if (fBx > this.relativeTol * separation + this.absoluteTol * bB.hw) {
+            axis = 2;
+            separation = fBx;
+            if (dbx > 0.0) this.n.set(bB.cos, bB.sin);
+            else this.n.set(-bB.cos, -bB.sin);
+        }
+        if (fBy > this.relativeTol * separation + this.absoluteTol * bB.hh) {
+            axis = 3;
+            separation = fBy;
+            if (dby > 0.0) this.n.set(-bB.sin, bB.cos);
+            else this.n.set(bB.sin, -bB.cos);
+        }
+        let front, negSide, posSide, side;
+        switch (axis) {
+            case 0:
+                this.fn.copy(this.n);
+                front = bA.p.dot(this.fn) + bA.hw;
+                this.sn.set(-bA.sin, bA.cos);
+                side = bA.p.dot(this.sn);
+                negSide = -side + bA.hh;
+                posSide = side + bA.hh;
+                this.computeIncidentEdge(bB);
+                break;
+            case 1:
+                this.fn.copy(this.n);
+                front = bA.p.dot(this.fn) + bA.hh;
+                this.sn.set(bA.cos, bA.sin);
+                side = bA.p.dot(this.sn);
+                negSide = -side + bA.hw;
+                posSide = side + bA.hw;
+                this.computeIncidentEdge(bB);
+                break;
+            case 2:
+                this.fn.copy(this.n).neg();
+                front = bB.p.dot(this.fn) + bB.hw;
+                this.sn.set(-bB.sin, bB.cos);
+                side = bB.p.dot(this.sn);
+                negSide = -side + bB.hh;
+                posSide = side + bB.hh;
+                this.computeIncidentEdge(bA);
+                break;
+            case 3:
+                this.fn.copy(this.n).neg();
+                front = bB.p.dot(this.fn) + bB.hh;
+                this.sn.set(bB.cos, bB.sin);
+                side = bB.p.dot(this.sn);
+                negSide = -side + bB.hw;
+                posSide = side + bB.hw;
+                this.computeIncidentEdge(bA);
+                break;
+        }
+        if (this.clipSegmentToLine(this.c1, this.ie, this.sn.neg(), negSide) < 2)
+            return;
+        if (this.clipSegmentToLine(this.c2, this.c1, this.sn.neg(), posSide) < 2)
+            return;
+        let i, cpx, cpy, ct;
+        let friction = Math.sqrt(bA.friction * bB.friction);
+        for (i = 0; i < 2; ++i) {
+            this.sn.copy(this.c2[i]);
+            separation = this.fn.dot(this.sn) - front;
+            if (separation < 0) {
+                if (this.numContacts < this.maxContacts) {
+                    ct = this.contacts[this.numContacts];
+                } else {
+                    ct = new World.Contact(this);
+                    this.contacts.push(ct);
+                    this.maxContacts++;
+                }
+                this.sn.subScale(this.fn, separation);
+                ct.update(bA, bB, separation, this.n, friction, this.sn);
+                this.numContacts++;
+            }
+        }
+    }
+    clipSegmentToLine(vO, vI, n, offset) {
+        let numOut = 0;
+        let distance0 = n.dot(vI[0]) - offset;
+        let distance1 = n.dot(vI[1]) - offset;
+        if (distance0 <= 0.0) {
+            vO[numOut].copy(vI[0]);
+            numOut++;
+        }
+        if (distance1 <= 0.0) {
+            vO[numOut].copy(vI[1]);
+            numOut++;
+        }
+        if (distance0 * distance1 < 0.0) {
+            let interp = distance0 / (distance0 - distance1);
+            vO[numOut].set(
+                vI[0].x + interp * (vI[1].x - vI[0].x),
+                vI[0].y + interp * (vI[1].y - vI[0].y)
+            );
+            ++numOut;
+        }
+        return numOut;
+    }
+    computeIncidentEdge(b) {
+        let nrx = -(b.cos * this.fn.x + b.sin * this.fn.y);
+        let nry = -(-b.sin * this.fn.x + b.cos * this.fn.y);
+        if (Math.abs(nrx) > Math.abs(nry)) {
+            if (nrx > 0.0) {
+                this.ie[0].set(b.hw, -b.hh);
+                this.ie[1].set(b.hw, b.hh);
+            } else {
+                this.ie[0].set(-b.hw, b.hh);
+                this.ie[1].set(-b.hw, -b.hh);
+            }
+        } else {
+            if (nry > 0.0) {
+                this.ie[0].set(b.hw, b.hh);
+                this.ie[1].set(-b.hw, b.hh);
+            } else {
+                this.ie[0].set(-b.hw, -b.hh);
+                this.ie[1].set(b.hw, -b.hh);
+            }
+        }
+        this.ie[0].set(
+            b.p.x + b.cos * this.ie[0].x - b.sin * this.ie[0].y,
+            b.p.y + b.sin * this.ie[0].x + b.cos * this.ie[0].y
+        );
+        this.ie[1].set(
+            b.p.x + b.cos * this.ie[1].x - b.sin * this.ie[1].y,
+            b.p.y + b.sin * this.ie[1].x + b.cos * this.ie[1].y
+        );
+    }
+}
+////////////////////////////////////////////////////
+World.Vec = class {
+    constructor(x, y) {
+        this.x = x || 0.0;
+        this.y = y || 0.0;
+    }
+    set(x, y) {
+        this.x = x;
+        this.y = y;
+        return this;
+    }
+    copy(a) {
+        this.x = a.x;
+        this.y = a.y;
+        return this;
+    }
+    dot(a) {
+        return this.x * a.x + this.y * a.y;
+    }
+    cross(a) {
+        return this.x * a.y - this.y * a.x;
+    }
+    sqlen() {
+        return this.x * this.x + this.y * this.y;
+    }
+    neg() {
+        this.x = -this.x;
+        this.y = -this.y;
+        return this;
+    }
+    perp() {
+        const x = this.x;
+        this.x = this.y;
+        this.y = -x;
+        return this;
+    }
+    add(a) {
+        this.x += a.x;
+        this.y += a.y;
+        return this;
+    }
+    addScale(a, s) {
+        this.x += a.x * s;
+        this.y += a.y * s;
+        return this;
+    }
+    subScale(a, s) {
+        this.x -= a.x * s;
+        this.y -= a.y * s;
+        return this;
+    }
+    scaleFrom(a, s) {
+        this.x = a.x * s;
+        this.y = a.y * s;
+        return this;
+    }
+    subFrom(a, b) {
+        this.x = a.x - b.x;
+        this.y = a.y - b.y;
+        return this;
+    }
+}
+
+function vec(x, y) {
+    return new World.Vec(x, y);
+}
+///////////////////////////////////////////////
+World.Contact = class {
+    constructor(world) {
+        this.bA = null;
+        this.bB = null;
+        this.p = vec();
+        this.n = vec();
+        this.r1 = vec();
+        this.r2 = vec();
+        this.rv = vec();
+        this.ip = vec();
+        this.Pn = 0.0;
+        this.Pt = 0.0;
+        this.separation = 0.0;
+        this.massNormal = 0.0;
+        this.massTangent = 0.0;
+        this.bias = 0.0;
+        this.friction = 0.0;
+        this.allowedPenetration = world.allowedPenetration;
+        this.biasFactor = -world.biasFactor * world.invDT;
+    }
+    update(bA, bB, separation, n, friction, p) {
+        this.bA = bA;
+        this.bB = bB;
+        this.separation = separation;
+        this.n.copy(n);
+        this.p.copy(p);
+        this.Pn = 0.0;
+        this.Pt = 0.0;
+        this.friction = friction;
+        this.r1.subFrom(this.p, this.bA.p);
+        this.r2.subFrom(this.p, this.bB.p);
+        this.massNormal =
+            1.0 /
+            (this.bA.iM +
+                this.bB.iM +
+                this.bA.iI * (this.r1.sqlen() - this.r1.dot(this.n) ** 2) +
+                this.bB.iI * (this.r2.sqlen() - this.r2.dot(this.n) ** 2));
+        this.massTangent =
+            1.0 /
+            (this.bA.iM +
+                this.bB.iM +
+                this.bA.iI * (this.r1.sqlen() - this.r1.dot(this.n) ** 2) +
+                this.bB.iI * (this.r2.sqlen() - this.r2.dot(this.n) ** 2));
+        this.bias =
+            this.biasFactor * Math.min(0.0, this.separation + this.allowedPenetration);
+    }
+    relativeVelocity() {
+        this.rv.set(
+            this.bB.v.x - this.bB.va * this.r2.y - this.bA.v.x + this.bA.va * this.r1.y,
+            this.bB.v.y + this.bB.va * this.r2.x - this.bA.v.y - this.bA.va * this.r1.x
+        );
+    }
+    impulse(ip) {
+        this.bA.v.subScale(ip, this.bA.iM);
+        this.bA.va -= this.bA.iI * this.r1.cross(ip);
+        this.bB.v.addScale(ip, this.bB.iM);
+        this.bB.va += this.bB.iI * this.r2.cross(ip);
+    }
+    applyImpulse() {
+        this.relativeVelocity();
+        const Pn0 = this.Pn;
+        this.Pn = Math.max(
+            Pn0 + this.massNormal * (-this.rv.dot(this.n) + this.bias),
+            0.0
+        );
+        this.ip.scaleFrom(this.n, this.Pn - Pn0);
+        this.impulse(this.ip);
+        this.relativeVelocity();
+        const maxPt = this.friction * this.Pn;
+        const Pn1 = this.Pt;
+        this.Pt = Math.max(-maxPt,
+            Math.min(Pn1 - this.massTangent * this.rv.cross(this.n), maxPt)
+        );
+        this.ip.scaleFrom(this.n, this.Pt - Pn1).perp();
+        this.impulse(this.ip);
+    }
+}
+///////////////////////////////////////////////
+World.Shape = class {
+    constructor(setup) {
+        this.ctx = ctx;
+        this.width = setup.w || 0.0;
+        this.height = setup.h || 0.0;
+        this.offset = setup.offset || 0.0;
+        this.loaded = false;
+        this.texture = null;
+        if (!setup.src) return;
+        const source = new Image();
+        source.onload = e => {
+            this.loaded = true;
+            this.texture = document.createElement("canvas");
+            this.texture.width = source.height;
+            this.texture.height = source.width;
+            const ict = this.texture.getContext("2d");
+            ict.translate(source.height / 2, source.width / 2);
+            ict.rotate(setup.rotate);
+            ict.drawImage(source, -source.width / 2, -source.height / 2);
+        };
+        source.src = setup.src;
+    }
+    draw() {
+        this.ctx.drawImage(
+            this.texture, -this.width * 0.5, -this.height * 0.5 + this.offset,
+            this.width,
+            this.height
+        );
+    }
+}
+///////////////////////////////////////////////
+World.Body = class {
+    constructor(world, setup) {
+        const w = setup.w || 1.0;
+        const h = setup.h || 1.0;
+        this.p = vec(setup.x, setup.y);
+        this.v = vec(setup.vx, setup.vy);
+        this.hw = w * 0.5;
+        this.hh = h * 0.5;
+        this.rd = Math.sqrt(this.hw * this.hw + this.hh * this.hh);
+        this.va = setup.angularVelocity || 0.0;
+        this.ra = setup.rotation || 0.0;
+        this.cos = Math.cos(this.ra);
+        this.sin = Math.sin(this.ra);
+        this.friction =
+            setup.friction === undefined ? world.friction : setup.friction;
+        let mass = setup.mass || Infinity;
+        if (mass < Infinity) {
+            this.iM = 1.0 / mass;
+            this.iI = 1.0 / (mass * (w * w + h * h) / 12);
+        } else {
+            this.iM = 0.0;
+            this.iI = 0.0;
+        }
+        this.dt = world.timeStep;
+        this.gravity = setup.gravity || world.gravity;
+        this.ctx = ctx;
+        this.world = world;
+        this.nocontact = [];
+        this.shape = setup.shape ?
+            world.shapes[setup.shape] :
+            new World.Shape({});
+    }
+    addJoint(setup) {
+        setup.b1 = setup.body;
+        setup.b2 = this;
+        this.world.addJoint(setup);
+        return this;
+    }
+    integrate() {
+        if (!this.iM) return;
+        this.p.addScale(this.v, this.dt);
+        this.ra += this.va * this.dt;
+        this.v.y += this.gravity * this.dt;
+        this.cos = Math.cos(this.ra);
+        this.sin = Math.sin(this.ra);
+        if (this.p.y > this.world.maxy) {
+            this.world.removeBody(this);
+        }
+    }
+    draw() {
+        if (this.shape.loaded) {
+            this.ctx.save();
+            this.ctx.translate(this.p.x, this.p.y);
+            this.ctx.rotate(this.ra);
+            this.shape.draw();
+            this.ctx.restore();
+        }
+        if (this.world.DEBUG) {
+            let chw = this.cos * this.hw;
+            let shw = this.sin * this.hw;
+            let chh = this.cos * this.hh;
+            let shh = this.sin * this.hh;
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.p.x - chw + shh, this.p.y - shw - chh);
+            this.ctx.lineTo(this.p.x + chw + shh, this.p.y + shw - chh);
+            this.ctx.lineTo(this.p.x + chw - shh, this.p.y + shw + chh);
+            this.ctx.lineTo(this.p.x - chw - shh, this.p.y - shw + chh);
+            this.ctx.closePath();
+            this.ctx.strokeStyle = "#fff";
+            this.ctx.stroke();
+        }
+    }
+    noContact(list) {
+        for (const b of list) {
+            if (!this.nocontact.includes(b)) this.nocontact.push(b);
+            if (!b.nocontact.includes(this)) b.nocontact.push(this);
+        }
+    }
+}
+///////////////////////////////////////////////
+World.Joint = class {
+    constructor(world, setup) {
+        this.bA = setup.b1;
+        this.bB = setup.b2;
+        let c, s, x, y;
+        c = this.bA.cos;
+        s = this.bA.sin;
+        x = setup.ax - this.bA.p.x;
+        y = setup.ay - this.bA.p.y;
+        this.a1 = vec(c * x + s * y, -s * x + c * y);
+        c = this.bB.cos;
+        s = this.bB.sin;
+        x = setup.ax - this.bB.p.x;
+        y = setup.ay - this.bB.p.y;
+        this.a2 = vec(c * x + s * y, -s * x + c * y);
+        this.m00 = 0.0;
+        this.m01 = 0.0;
+        this.m11 = 0.0;
+        this.r1 = vec();
+        this.r2 = vec();
+        this.bs = vec();
+        this.ai = vec();
+        this.ip = vec();
+        let bias = setup.biasFactor ? setup.biasFactor : world.biasFactor;
+        this.biasFactor = -bias * world.invDT;
+        this.softness = setup.softness || 0.0;
+        this.iM = this.bA.iM + this.bB.iM + this.softness;
+        this.color = setup.color || "#888";
+        this.ctx = ctx;
+    }
+    preStep() {
+        this.r1.set(
+            this.bA.cos * this.a1.x - this.bA.sin * this.a1.y,
+            this.bA.sin * this.a1.x + this.bA.cos * this.a1.y
+        );
+        this.r2.set(
+            this.bB.cos * this.a2.x - this.bB.sin * this.a2.y,
+            this.bB.sin * this.a2.x + this.bB.cos * this.a2.y
+        );
+        const Km00 =
+            this.iM +
+            this.bA.iI * this.r1.y * this.r1.y +
+            this.bB.iI * this.r2.y * this.r2.y;
+        const Km01 = -this.bA.iI * this.r1.x * this.r1.y - this.bB.iI * this.r2.x * this.r2.y;
+        const Km11 =
+            this.iM +
+            this.bA.iI * this.r1.x * this.r1.x +
+            this.bB.iI * this.r2.x * this.r2.x;
+        const det = 1.0 / (Km00 * Km11 - Km01 * Km01);
+        this.m00 = det * Km11;
+        this.m01 = -det * Km01;
+        this.m11 = det * Km00;
+        this.bs.set(
+            (this.bB.p.x + this.r2.x - (this.bA.p.x + this.r1.x)) * this.biasFactor,
+            (this.bB.p.y + this.r2.y - (this.bA.p.y + this.r1.y)) * this.biasFactor
+        );
+        this.bA.v.subScale(this.ai, this.bA.iM);
+        this.bA.va -= this.bA.iI * this.r1.cross(this.ai);
+        this.bB.v.addScale(this.ai, this.bB.iM);
+        this.bB.va += this.bB.iI * this.r2.cross(this.ai);
+    }
+    applyImpulse() {
+        const bx =
+            this.bs.x -
+            (this.bB.v.x -
+                this.bB.va * this.r2.y -
+                this.bA.v.x +
+                this.bA.va * this.r1.y) -
+            this.ai.x * this.softness;
+        const by =
+            this.bs.y -
+            (this.bB.v.y +
+                this.bB.va * this.r2.x -
+                this.bA.v.y -
+                this.bA.va * this.r1.x) -
+            this.ai.y * this.softness;
+        this.ip.set(this.m00 * bx + this.m01 * by, this.m01 * bx + this.m11 * by);
+        this.bA.v.subScale(this.ip, this.bA.iM);
+        this.bA.va -= this.bA.iI * this.r1.cross(this.ip);
+        this.bB.v.addScale(this.ip, this.bB.iM);
+        this.bB.va += this.bB.iI * this.r2.cross(this.ip);
+        this.ai.add(this.ip);
+    }
+}
+///////////////////////////////////////////////
+class Canvas {
+    constructor() {
+        this.elem = document.createElement("canvas");
+        this.ctx = this.elem.getContext("2d");
+        document.body.appendChild(this.elem);
+        this.resize();
+        window.addEventListener("resize", () => this.resize(), false);
+    }
+    resize() {
+        this.width = this.elem.width = this.elem.offsetWidth;
+        this.height = this.elem.height = this.elem.offsetHeight;
+        if (ground) {
+            ground.p.x = this.width / 2
+            ground.hw = Math.min(this.width, this.height) * 0.5;
+            ground.rd = Math.sqrt(ground.hw * ground.hw + ground.hh * ground.hh);
+        }
+    }
+}
+///////////////////////////////////////////////
+const human = (x, y) => {
+    const human = [];
+    const armleft = world.addBody({
+        x: x,
+        y: y + s * 2,
+        w: s * 0.75,
+        h: s * 2,
+        mass: 1,
+        shape: "arm"
+    });
+    human.push(armleft);
+    const forearmleft = world.addBody({
+        x: x,
+        y: y + s * 4,
+        w: s * 0.5,
+        h: s * 2.5,
+        mass: 1,
+        shape: "forearm"
+    });
+    human.push(forearmleft);
+    const legleft = world.addBody({
+        x: x - s * 0.25,
+        y: y + s * 5.25,
+        w: s * 1,
+        h: s * 2.5,
+        mass: 2,
+        shape: "leg"
+    });
+    human.push(legleft);
+    const forelegleft = world.addBody({
+        x: x - s * 0.25,
+        y: y + s * 7.5,
+        w: s * 1,
+        h: s * 3,
+        mass: 1,
+        shape: "foreleg"
+    });
+    human.push(forelegleft);
+    const pleft = world.addBody({
+        x: x + s * 0.25,
+        y: y + s * 6,
+        w: s * 0.01,
+        h: s * 1,
+        mass: 2
+    }).addJoint({
+        body: legleft,
+        ax: x + s * 0.25,
+        ay: y + s * 6,
+        softness: 0.5
+    });
+    human.push(pleft);
+    const legright = world.addBody({
+        x: x - 1,
+        y: y + s * 5.25,
+        w: s * 1,
+        h: s * 2.5,
+        mass: 2,
+        shape: "leg"
+    });
+    human.push(legright);
+    const forelegright = world.addBody({
+        x: x - 1,
+        y: y + s * 7.5,
+        w: s * 1,
+        h: s * 3,
+        mass: 1,
+        shape: "foreleg"
+    });
+    human.push(forelegright);
+    const pright = world
+        .addBody({
+            x: x + s * 0.25,
+            y: y + s * 6,
+            w: s * 0.01,
+            h: s * 1,
+            mass: 2
+        })
+        .addJoint({
+            body: legright,
+            ax: x + s * 0.25,
+            ay: y + s * 6,
+            softness: 0.5
+        });
+    human.push(pright);
+    const head = world.addBody({
+        x: x,
+        y: y,
+        w: s,
+        h: s * 1.5,
+        mass: 1,
+        gravity: -50,
+        shape: "head"
+    });
+    human.push(head);
+    const torso = world.addBody({
+        x: x,
+        y: y + s * 2.75,
+        w: s * 1.5,
+        h: s * 3.5,
+        mass: 5,
+        angularVelocity: Math.random() * 50 - 25,
+        shape: "torso"
+    });
+    human.push(torso);
+    const tright = world.addBody({
+        x: x - s * 0.75,
+        y: y + s * 3.75,
+        w: s * 0.2,
+        h: s * 1,
+        mass: 2
+    }).addJoint({
+        body: torso,
+        ax: x - s * 0.75,
+        ay: y + s * 3.75
+    });
+    human.push(tright);
+    const armright = world.addBody({
+        x: x + 1,
+        y: y + s * 2.3,
+        w: s * 1,
+        h: s * 2,
+        mass: 1,
+        shape: "arm"
+    });
+    human.push(armright);
+    const forearmright = world.addBody({
+        x: x + 1,
+        y: y + s * 4,
+        w: s * 0.5,
+        h: s * 2.6,
+        mass: 1,
+        shape: "forearm"
+    });
+    human.push(forearmright);
+    torso.addJoint({
+        body: head,
+        ax: x,
+        ay: y + s,
+        softness: 0.5
+    });
+    armright.addJoint({
+        body: torso,
+        ax: x + 1,
+        ay: y + s,
+        softness: 0.5
+    });
+    forearmright.addJoint({
+        body: armright,
+        ax: x + 1,
+        ay: y + s * 3,
+        softness: 0.5
+    });
+    armleft.addJoint({
+        body: torso,
+        ax: x,
+        ay: y + s,
+        softness: 0.5
+    });
+    forearmleft.addJoint({
+        body: armleft,
+        ax: x,
+        ay: y + s * 3,
+        softness: 0.5
+    });
+    legright.addJoint({
+        body: torso,
+        ax: x - 1,
+        ay: y + s * 4.25,
+        softness: 0.5
+    });
+    forelegright.addJoint({
+        body: legright,
+        ax: x - 1,
+        ay: y + s * 6.26,
+        softness: 0.5
+    });
+    legleft.addJoint({
+        body: torso,
+        ax: x - s * 0.25,
+        ay: y + s * 4.25,
+        softness: 0.5
+    });
+    forelegleft.addJoint({
+        body: legleft,
+        ax: x - s * 0.25,
+        ay: y + s * 6.26,
+        softness: 0.5
+    });
+    armright.noContact([torso, tright, head, forearmright, forearmleft])
+    forearmright.noContact([tright, forearmleft]);
+    armleft.noContact([head, torso, tright, armright, forearmleft, forearmright]);
+    legleft.noContact([torso, legright, forelegleft, forelegright, pright]);
+    legright.noContact([torso, forelegright, forelegleft, pleft]);
+    forelegleft.noContact([legleft, pright, forelegright]);
+    forelegright.noContact([pleft]);
+    return human;
+};
+///////////////////////////////////////////////
+let ground = null;
+const humans = [];
+const canvas = new Canvas();
+const ctx = canvas.ctx,
+    width = canvas.width,
+    height = canvas.height;
+let frame = 0;
+if (window.location.href.indexOf("fullcpgrid") > -1) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const original = document.createElement('iframe');
+        original.style.display = 'none';
+        document.body.appendChild(original);
+        window.requestAnimationFrame = original.contentWindow.requestAnimationFrame;
+    }, false);
+}
+///////////////////////////////////////////////
+function run() {
+    requestAnimationFrame(run);
+    if (frame++ % 120 === 0) {
+        humans.push(human(
+            canvas.width / 2, -canvas.height / 2.5
+        ));
+    }
+    ground.p.y += (canvas.height + 50 - ground.p.y) * 0.05;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    world.step();
+}
+///////////////////////////////////////////////
+const world = new World({
+    gravity: 30,
+    iterations: 9,
+    timeStep: 1 / 30,
+    friction: 0.5,
+    maxy: height * 2
+});
+ground = world.addBody({
+    x: width / 2,
+    y: height + 50,
+    w: Math.min(width, height),
+    h: 100,
+    mass: Infinity
+});
+///////////////////////////////////////////////
+const s = height / 30;
+world.addShape({
+    id: "head",
+    w: s * 1.6,
+    h: s * 2.1,
+    offset: s * 0.2,
+    rotate: -Math.PI / 2,
+    src: "img/r5.png"
+});
+world.addShape({
+    id: "torso",
+    w: s * 2.2,
+    h: s * 3.75,
+    offset: -s * 0.1,
+    rotate: Math.PI / 2,
+    src: "img/r1.png"
+});
+world.addShape({
+    id: "arm",
+    w: s * 1.3,
+    h: s * 2.4,
+    offset: -s * 0.35,
+    rotate: Math.PI / 2,
+    src: "img/r2.png"
+});
+world.addShape({
+    id: "forearm",
+    w: s * 1.2,
+    h: s * 2.6,
+    offset: s * 0,
+    rotate: Math.PI / 2,
+    src: "img/r3.png"
+});
+world.addShape({
+    id: "leg",
+    w: s * 1.5,
+    h: s * 2.8,
+    offset: 0,
+    rotate: Math.PI / 2,
+    src: "img/r4.png"
+});
+world.addShape({
+    id: "foreleg",
+    w: s * 2.2,
+    h: s * 3,
+    offset: s * 0,
+    rotate: Math.PI / 2,
+    src: "img/r6.png"
+});
+run();
+</script>
+<div style="text-align:center;">
+<p>更多源码：<a href="http://www.mycodes.net/" target="_blank">源码之家</a></p>
+</div>
+</body>
 </html>
