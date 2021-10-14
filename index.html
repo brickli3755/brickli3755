@@ -1,390 +1,304 @@
 ﻿<!DOCTYPE html>
 <html>
+<head>
+<meta charset="utf-8"/>
+<title>我喜欢你❤️爱收集资源网</title>
+<!-- style -->
+<link type="text/css" rel="stylesheet" href="css/theme.css">
+<script src="js/jquery-2.0.3.min.js"></script>
+</head>
+<body>
+<div id="div_container">
+	<!-- 最外层div，用于居中兼容PC和移动 -->
+	<div id="div_start_bg"></div>
+	<div id="div_onlyyou">
+		<!-- 用于设置背景 -->
+		<div id="div_oy_inner">
+			<!-- 用于存放content -->
+			<div class="div_oy_text">
+				<h1></h1>
+				<img class="img_oy_text" src="">
+				<p class="p_oy_text"></p>
+				<ul id="ul_oy_benefit">
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+					<li class="li_oy_benefit"></li>
+				</ul>
+			</div>
+			<ul id="ul_oy_btn">
+				<li onclick="oy_go_next()">Yes&nbsp;&nbsp;❤</li>
+				<li onclick="oy_show_benefit()">No&nbsp;&nbsp;✖</li>
+			</ul>
+			<div id="div_oy_note" onclick="oy_hide_note()">
+				<img src="images/emoji_kelian.jpg" alt=""><br>请告诉我Yes！
+				<div id="div_oy_note_close">✖</div>
+			</div>
+			<div id="div_oy_yes">
+				<img src="images/emoji_bixin.jpg" alt=""><br>太好了！哈哈~
+			</div>
+		</div>
+	</div>
+	<div class="div_pure_words">
+		<div class="div_pure_words_bg">
+			<div class="div_pure_words_height"></div>
+		</div>
+		<div class="div_pw_typed">
+			<span id="span_pw_typed"></span>
+		</div>
+	</div>
+	<div id="div_btn_container">
+		<div id="div_btn_inner">
+			<div class="div_music_tips"></div>
+			<div class="div_btn" id="div_music" onclick="music_switch()">
+				<!-- 音乐按钮部分 -->
+				<img id="img_music" src="images/music_note_big.png" style="-webkit-animation:music_play_rotate 1s linear infinite">
+				<!-- 您的浏览器不支持播放音乐 -->
+				<audio id="audio_music" autoplay="autoplay" loop="loop"><source type="audio/mpeg"/></audio>
+			</div>
+			<div class="div_record_tips"></div>
+			<div class="div_btn" id="div_record" onclick="record_switch()">
+				<audio id="audio_record" loop="loop"><source type="audio/mpeg"/></audio>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+//判断客户端设备，选择写入meta
+function init_viewport() {
+	if (navigator.userAgent.indexOf('Android') != -1) {
+		var version = parseFloat(RegExp.$1);
+		if (version > 2.3) {
+			var width = window.outerWidth == 0 ? window.screen.width : window.outerWidth;
+			var phoneScale = parseInt(width) / 500;
+			document.write('<meta name="viewport" content="width=500, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+		} else {
+			document.write('<meta name="viewport" content="width=500, target-densitydpi=device-dpi, user-scalable=0">');
+		}
+	} else if (navigator.userAgent.indexOf('iPhone') != -1) {
+		var phoneScale = parseInt(window.screen.width) / 500;
+		document.write('<meta name="viewport" content="width=500, min-height=750, initial-scale=' + phoneScale + ', maximum-scale=' + phoneScale + ', user-scalable=0" /> '); //0.75   0.82
+	} else {
+		document.write('<meta name="viewport" content="width=500, height=750, initial-scale=0.64" /> '); //0.75  0.82
+	}
+}
+init_viewport();
 
-	<script src="js/clipboard.js"></script>
-    <script>
-    var clipboard = new ClipboardJS('.fuzhitkl');
+var theme = 'pure_words';
+console.log('theme ->' + theme);
+var theme_content = {
+	"pure_words_content": "遇见你是我所有美好故事的开始，所以，请别放开我的手，也别缺席我的将来，因为一辈子和你在一起才叫将来<um style='color: #F44336;'>💕</um>",
+	"typed_bool": "typed_y",
+	"cursor_char": "cursor_heart",
+	"bg_style_pure_words": "bg_opacity",
+	"bg_img": "images/3.jpg",
+	"simple_page_content": "",
+	"video_page_content": ""
+};
+console.log(theme_content);
 
-    clipboard.on('success', function(e) {
-        console.log(e);
-    });
+var music_json = {
+	"music_select": "m_online",
+	"m_online_id": "7",
+	"m_online_url": "images/1.mp3",
+	"m_upload_name": "null",
+	"m_upload_url": "null"
+};
+console.log(music_json);
+var record_json = {
+	"record_bool": "r_false",
+	"r_wechat_time": "null",
+	"r_wechat_url": "null",
+	"r_wechat_amr": "null"
+};
+console.log(record_json);
 
-    clipboard.on('error', function(e) {
-        console.log(e);
-    });
-    </script>
 
-   <head>
-      <meta charset="utf-8">
-      <title>xx我爱你-</title>
-	<meta name="keywords" content="表白网页,我要表白网,表白网址" /> 
-<meta name="description" content="xx我爱你-我要表白网" /> 
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all"/>
-      <link href="css/base.css" rel="stylesheet" type="text/css" media="all"/>
-      <link href="css/main.css" rel="stylesheet" type="text/css" media="all"/>
-      <link href="css/venobox.css" rel="stylesheet" type="text/css"  media="all" />
-      <link href="css/fonts.css" rel="stylesheet" type="text/css"  media="all" />
-      <link href="css/ae168344b8194b348b667f19ac4d1956.css" rel="stylesheet">
-   </head>
-   <body>
-      <div class="loader">
-         <div class="loader-inner">
-            <svg width="120" height="220" viewbox="0 0 100 100" class="loading-spinner" version="1.1" xmlns="http://www.w3.org/2000/svg">
-               <circle class="spinner" cx="50" cy="50" r="21" fill="#ffffff" stroke-width="2"/>
-            </svg>
-         </div>
-      </div>
-      <div class="wrapper">
-         <section class="hero overlay">
-            <div class="background-img">
-               <img src="picture/17.jpg" alt="">
-            </div>
-            <header class="header default">
-               <div class=" left-part">
-                  <a class="logo scroll" href="#hero">
-                     <h2>LOVE</h2>
-                  </a>
-               </div>
-               <div class="right-part">
-                  <nav class="main-nav">
-                     <div class="toggle-mobile-but">
-                        <a href="#" class="mobile-but" >
-                           <div class="lines"></div>
-                        </a>
-                     </div>
-                     <ul>
-                        <li><a class="scroll" href="#home">爱的首页</a></li>
-                        <li><a class="scroll" href="#story">爱的故事</a></li>
-                        <li><a class="scroll" href="#album">爱的相册</a></li>
-                     </ul>
-                  </nav>
-               </div>
-            </header>
-            <div class="inner-hero">
-               <div class="container hero-content">
-                  <div class="row">
-                     <div class="col-sm-12 text-center">
-                        <h1 class="large mb-20">i love you</h1>
-                        <div class="block-date-hero">
-                           <div class="circle-dashed bg-n">
-                              <div class="round-circle">
-                                 <svg viewBox="0 0 103 103" version="1.1" xmlns="http://www.w3.org/2000/svg"  class="dashed-border">
-                                    <circle cx="50%" cy="50%" r="50" />
-                                 </svg>
-                                 <i class="icon-heart"></i>
-                              </div>
-                           </div>
-                           <ul>
-                              <li>xx</li>
-                              <li>XX</li>
-                           </ul>
-                        </div>
-                        <p class="mt-20 lead"></p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </section>
-         <section id="story" class="story pt-120 pb-120">
-            <svg class="section-dashed" version="1.1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50px" height="578px" xml:space="preserve">
-               <path class="dashed-line" stroke-width="1"  d="M30 0 v600 400"/>
-            </svg>
-            <div class="container">
-               <div class="row">
-                  <div class="col-sm-12 text-center mb-100">
-				  
-                     <h1 class="title">Our love story</h1>
-                     <p>The Story of our love</p>
-                  </div>
-				    <div class="background-img">
-               <img src="picture/1.jpeg" alt="">
-            </div>
-               </div>
-               <div class="row">
-                  <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 text-center mb-30">
-                     <h2 class="heavy">1这就是我们的爱情故事<br><span>2同一个愿望,相爱.我爱你,至死不渝</span></h2>
-                  </div>
-               </div>
-               <div class="row story-row mt-100 mb-100">
-                  <div class="circle-dashed timeline bg">
-                     <div class="round-circle bg before">
-                        <svg viewBox="0 0 103 103" version="1.1" xmlns="http://www.w3.org/2000/svg" class="dashed-border">
-                           <circle cx="50%" cy="50%" r="50"/>
-                        </svg>
-                        <i class="icon-heart"></i>
-                     </div>
-                  </div>
-                  <div class="col-sm-5 ">
-                     <div class="couple-story text-right">
-                        <p>3我们的相遇是意外的，但这是一个美丽幸福的意外，让我遇到了这么好的你</p>
-                     </div>
-                  </div>
-                  <div class="col-sm-5 col-sm-offset-2">
-                     <div class="couple-story">
-                        <p>4莎士比亚说过：爱情是一种甜蜜的痛苦，但是我愿意忍受这种痛苦，莎士比亚还说过，世界上没有比服侍爱情更快乐的了，你愿不愿意享受这种快乐？当然你是愿意的~嘿嘿</p>
-                     </div>
-                  </div>
-               </div>
-               <div class="row story-row mt-100 mb-80 ">
-                  <div class="circle-dashed timeline bg green">
-                     <div class="round-circle  green before">
-                        <svg viewBox="0 0 103 103" version="1.1" xmlns="http://www.w3.org/2000/svg" class="dashed-border">
-                           <circle cx="50%" cy="50%" r="50"/>
-                        </svg>
-                        <i class="icon-heart"></i>
-                     </div>
-                  </div>
-                  <div class="col-sm-5 ">
-                     <div class="couple-story text-right">
-                        <p>5之前我不相信一见钟情，但是见到你的那一刻，我否定了我的看法。我的心为你沦陷，从此只为你跳动</p>
-                     </div>
-                  </div>
-                  <div class="col-sm-5 col-sm-offset-2">
-                     <div class="couple-story">
-                        <p>6有一种爱的感觉，叫感同身受。有一种爱的默契，叫心有灵犀。有一种爱的承诺，叫天长地久</p>
-                     </div>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-md-12  text-center mt-100">
-                     <a href="#" class="but">
-                        <span>Home</span>
-                        <svg class="but-svg" width="175" height="50" viewBox="0 0 415 120" xmlns="http://www.w3.org/2000/svg">
-                           <rect class="but-rect" x="10" y="10" width="400" height="100" rx="6" ry="6"/>
-                        </svg>
-                     </a>
-                  </div>
-               </div>
-            </div>
-         </section>
-         <section class="date pt-150 pb-150 overlay">
-            <div class="background-img">
-               <img src="picture/4.jpg" alt="">
-            </div>
-            <div class="container">
-               <div class="row">
-                     <h2 class="indent">Wedding date</h2>
-                  <div class="col-sm-12 text-center">
-                     <div class="block-content front-p">
-                        
-                        <h2 class="typo">Save the date</h2>
-                        <span id="elapseClock" class="text-white" style="font-size: 45px;font-weight: 300;">days <span class="digit">20</span> hours <span class="digit">14</span> minutes <span class="digit">00</span> seconds</span>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </section>
-         <section id="album" class="album bg-grey pt-120 pb-120">
-            <div class="container">
-               <div class="row">
-                  <div class="col-sm-12 text-center mb-100">
-                     <h1 class="title">爱的相册</h1>
-                     <p>Main ceremony - Wedding party</p>
-                  </div>
-               </div>
-               <div class="row mb-30">
-                     <h2 class="indent">Photo album</h2>
-                  <div class="col-md-4 col-sm-4 col-xs-12 " >
-                     <div class="block-img">
-                        <a href="https://z3.ax1x.com/2021/08/13/fDqIeS.jpg" class="venobox">
-                           <div class="background-img">
-                              <img alt="" src="https://z3.ax1x.com/2021/08/13/fDqIeS.jpg">
-                           </div>
-                        </a>
-                     </div>
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12 " >
-                     <div class="block-img">
-                        <a href="http://img.zxgnz.com/images/20190804/156490542731052.jpg" class="venobox">
-                           <div class="background-img">
-                              <img alt="" src="picture/xyd.jpg">
-                           </div>
-                        </a>
-                     </div>
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12 " >
-                     <div class="block-img">
-                        <a href="http://img.zxgnz.com/images/20190804/156490543096270.jpg" class="venobox">
-                           <div class="background-img">
-                              <img alt="" src="picture/156490543096270.jpg">
-                           </div>
-                        </a>
-                     </div>
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12" >
-                     <div class="block-img">
-                        <a href="http://img.zxgnz.com/images/20190804/156490543257636.jpg" class="venobox">
-                           <div class="background-img">
-                              <img alt="" src="picture/156490543257636.jpg">
-                           </div>
-                        </a>
-                     </div>
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12 " >
-                     <div class="block-img">
-                        <a href="http://img.zxgnz.com/images/20190804/156490543485467.jpg" class="venobox">
-                           <div class="background-img">
-                              <img alt="" src="picture/156490543485467.jpg">
-                           </div>
-                        </a>
-                     </div>
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12 " >
-                     <div class="block-img">
-                        <a href="http://img.zxgnz.com/images/20190804/156490543662231.jpg" class="venobox">
-                           <div class="background-img">
-                              <img alt="" src="picture/156490543662231.jpg">
-                           </div>
-                        </a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </section>
-         <section class="just-married pt-200 pb-200 overlay">
-            <div class="background-img">
-               <img src="picture/17.jpg" alt="">
-            </div>
-            <div class="container">
-               <div class="row">
-                  <div class="col-sm-12 text-center">
-                     <div class="block-content front-p">
-                        <h2 class="typo">❤</h2>
-                        <h2 class="heavy uppercase mt-10 light">7执子之手,与子携老</h2>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </section>
-         <footer class="footer pt-70 pb-70">
-            <div class="container">
-               <div class="row">
-                  <div class="col-sm-12 text-center">
-                     <p class="uppercase heavy normal">&copy; 2021 love. XX & xx</p>
-                  </div>
-               </div>
-            </div>
-         </footer>
-      </div>
-      <script src="js/jquery-1.12.4.min.js" type="text/javascript"></script>
-      <script src="js/jquery.countdown.min.js" type="text/javascript"></script>
-      <script src="js/venobox.min.js" type="text/javascript"></script>
-      <script src="js/smooth-scroll.js" type="text/javascript"></script>
-      <script src="js/script.js" type="text/javascript"></script>
-<script type="text/javascript">
-			var together = new Date();
-		    var strs = "2019-07-01";
-            var nowTime=new Date();
-            var together = new Date(strs.replace(/-/g,"/"));	
-			timeElapse(together);
-			setInterval(function () {timeElapse(together);}, 500);
-			function timeElapse(c){
-			var e=Date();
-			var f=(Date.parse(e)-Date.parse(c))/1000;
-			var g=Math.floor(f/(3600*24));f=f%(3600*24);
-			var b=Math.floor(f/3600);
-			if(b<10){b="0"+b}f=f%3600;var d=Math.floor(f/60);
-			if(d<10){d="0"+d}f=f%60;
-			if(f<10){f="0"+f}
-			var a='<span class="digit">'+g+'</span> days <span class="digit">'+b+'</span> hours <span class="digit">'+d+'</span> minutes <span class="digit">'+f+"</span> seconds";$("#elapseClock").html(a)};
+var main_title = '我喜欢你❤️';
+// console.log(main_title);
+if (main_title == '' || main_title == 'null') { //允许标题为空
+	document.title = '慢慢喜欢你';
+}
+
+var window_height = $(window).height();
+console.log('window_height ->' + window_height);
+var pure_words_content = theme_content['pure_words_content'];
+var str_cursorChar;
+var typed_bool;
+var interval_pw_height;
+var height_div_pw = $(".div_pure_words_height").height();
+function init_pure_words() {
+	$(".div_pure_words_height").html(pure_words_content + '22222'); //初始化复制内容，撑开文档高度            
+	// 初始化设置div的bg图片 初始化设置div的bg图片
+	if (typeof(theme_content['bg_style_pure_words']) != 'undefined' && theme_content['bg_style_pure_words'] == 'bg_opacity') {
+		if (typeof(theme_content['bg_img']) != 'undefined' && theme_content['bg_img'] != '') {
+			$(".div_pure_words_bg").css({
+				"background-image": "url(" + theme_content['bg_img'] + ")"
+			});
+		}
+	}
+	//以下是打字效果的js 
+	if (typeof(theme_content['cursor_char']) != 'undefined' && theme_content['cursor_char'] != '') {
+		switch (theme_content['cursor_char']) { //设置打字光标的样式
+		case 'cursor_heart':
+			str_cursorChar = '<um style="color: #F44336;">❤</um>';
+			break;
+		case 'cursor_sub':
+			str_cursorChar = '_';
+			break;
+		case 'cursor_music':
+			str_cursorChar = '♫';
+			break;
+		case 'cursor_star':
+			str_cursorChar = '★';
+			break;
+		case 'cursor_sun':
+			str_cursorChar = '☀';
+			break;
+		default:
+			str_cursorChar = '|';
+		}
+	} else { //处理全新作品，默认显示打字效果
+		str_cursorChar = '❤';
+	}
+	//判断用户有没有选择打字效果
+	if (typeof(theme_content['typed_bool']) != 'undefined' && theme_content['typed_bool'] != '') {
+		typed_bool = theme_content['typed_bool'] == 'typed_y' ? true : false;
+	} else {
+		typed_bool = false; //默认显示打字效果
+	}
+	display_pure_words();
+	$(".div_pure_words").fadeIn();
+	interval_pw_height = setInterval(function() {
+		console.log('div_pure_words_height -> ' + $('.div_pure_words_height').height());
+		var least_height_div_pw = $('.div_pure_words_height').height();
+		if (least_height_div_pw > height_div_pw) {
+			height_div_pw = least_height_div_pw;
+		} else {
+			clearInterval(interval_pw_height);
+			$(".div_pure_words_height").height(least_height_div_pw + 100);
+			if ($(".div_pure_words_height").height() < window_height) {
+				$(".div_pure_words_height").height(window_height); //不能小于窗口的高度
+				console.log('let us be high as window');
+			}
+		}
+	}, 100);
+}
+
+function display_pure_words() {
+	if (typed_bool) {
+		var typed_pure_words = new Typed('#span_pw_typed', {
+			strings: [pure_words_content],
+			//输入内容, 支持html标签
+			typeSpeed: 120,
+			//打字速度
+			cursorChar: str_cursorChar,
+			//替换光标的样式
+			contentType: 'html',
+			//值为html时，将打印的文本标签直接解析html标签
+			onComplete: function(abc) {
+				// console.log(abc); 
+				console.log('finished typing words');
+				// console.log($('#span_pw_typed').height()-$(".div_pure_words_height").height());
+			},
+		});
+	} else {
+		//如果不需要打字效果就直接显示
+		$("#span_pw_typed").html(pure_words_content).fadeIn();
+	}
+	init_attachment();
+}
+var start_content = {
+	chase_title: "做我女朋友好不好<um style='color: #F44336;'>💕</um>",
+	chase_text: "承蒙你的出现，够我喜欢好多年，我希望，以后你能用我的名字拒绝所有人<um style='color: #F44336;'>💕</um>",
+	chase_benefit: ["你是我拔掉氧气罐都想吻的人", "你是我跑完8000米还想拥抱的人", "你是我自罚三杯都不肯开口的秘密", "你是我赴汤蹈火都不肯放下的执着", "你是我电量只剩1%也想回信息的人", "你是我穷极一生不想醒来的梦"],
+	bg_style: "bg_custom",
+	bg_img: "images/2.jpg",
+	img_bool: "img_true",
+	img_src: "images/1.gif"
+}; //可能为null
+console.log(start_content);
+var start_id;
+$(function() {
+	//此事件为触发互动创意
+	start_id = 'onlyyou'; //可能为null
+	init_start(start_id);
+});
+function init_start(start_id) {
+	console.log('init_start ->' + start_id);
+	switch (start_id) {
+	case 'loveformat':
+		$('.div_loveformat').show();
+		init_loveformat();
+		break;
+	case 'hearttree':
+		$('#div_hearttree').show();
+		init_hearttree();
+		break;
+	case 'courage':
+		$('#div_courage').show();
+		init_courage();
+		break;
+	case 'birthdaycake':
+		$('#div_dbcake').show();
+		init_birthdaycake();
+		break;
+	case 'intersect':
+		$('#div_intersect').show();
+		init_intersect();
+		break;
+	case 'onlyyou':
+		$('#div_onlyyou').show();
+		init_onlyyou();
+		break;
+	default:
+		init_theme();
+	}
+}
+//开始动画主体部分
+function init_theme() {
+	console.log('init_theme');
+	$('#div_start_bg').fadeOut();
+	init_pure_words();
+}
+var attachment = 'null'; //可能为null
+var attached_content = {
+	"bool_save": false
+}; //可能为null
+console.log(attached_content);
+
+function init_attachment() { //开始attachment
+	console.log('init_attachment ->' + attachment);
+	switch (attachment) {
+	case 'timer':
+		init_at_timer();
+		break;
+	default:
+		return;
+	}
+}
 </script>
-
-
-<link rel="stylesheet" href="css/cuplayer.css">
-				 <div style="position:absolute; top:50px; right:50px;">
-		<audio id="main_audio" autoplay="autoplay" preload="auto" loop>
-            <source src="http://www.zaiyiqiba.com/mp3/kgmp3.php?id=de7a6d73d7caa0e8962fd29f4e2162ef" type="audio/mpeg" />
-        </audio>
-        <a class="c-white fs-12 icon-play rotate" id="btn-play" href="javascript:void(0);"></a>
-    </div>
-	 <script type="text/javascript">
-    //获取picid函数
-    $(function(){
-        $("area").click(function(){
-           var  picId=$(this).attr("data-id");
-           var picSrc="images/img_big/"+picId+".jpg"
-            $(".modal-content>.pic-box>img").attr("src",picSrc);
-        })
-        var isPlaying = function(audio) {return !audio.paused;}
-        var a = document.getElementById('main_audio');
-        $('#btn-play').on('click', function() {
-            if($(this).hasClass('rotate')) {
-                a.pause();
-                $(this).removeClass('rotate');
-            } else {
-                a.play();
-                $(this).addClass('rotate');
-            }
-        });
-
-    })
-    </script>
-    <script src="js/jweixin-1.0.0.js"></script>
-    <script>
-    function autoPlayAudio1() {
-        wx.config({
-            // 配置信息, 即使不正确也能使用 wx.ready
-            debug: false,
-            appId: '',
-            timestamp: 1,
-            nonceStr: '',
-            signature: '',
-            jsApiList: []
-        });
-        wx.ready(function() {
-            document.getElementById('main_audio').play();
-        });
-    }
-    autoPlayAudio1(); // 推荐使用方法1
-    </script>
-	<bgsound src="http://www.51bbw.cn/mp3/1youdiantian.mp3" loop="-1"/>
-<audio src="http://www.51bbw.cn/mp3/1youdiantian.mp3" controls autoplay='autoplay' loop="loop" id="bgmusic" style="display:none"></audio>
- <script>
-    (function() {
-        function log(info) {
-            console.log(info);
-            // alert(info);
-        }
-        function forceSafariPlayAudio() {
-            audioEl.load(); // iOS 9   还需要额外的 load 一下, 否则直接 play 无效
-            audioEl.play(); // iOS 7/8 仅需要 play 一下
-        }
-
-        var audioEl = document.getElementById('bgmusic');
-
-        audioEl.addEventListener('loadstart', function() {
-            log('loadstart');
-        }, false);
-        audioEl.addEventListener('loadeddata', function() {
-            log('loadeddata');
-        }, false);
-        audioEl.addEventListener('loadedmetadata', function() {
-            log('loadedmetadata');
-        }, false);
-        audioEl.addEventListener('canplay', function() {
-            log('canplay');
-        }, false);
-        audioEl.addEventListener('play', function() {
-            log('play');
-            // 当 audio 能够播放后, 移除这个事件
-            window.removeEventListener('touchstart', forceSafariPlayAudio, false);
-        }, false);
-        audioEl.addEventListener('playing', function() {
-            log('playing');
-        }, false);
-        audioEl.addEventListener('pause', function() {
-            log('pause');
-        }, false);
-
-        // 由于 iOS Safari 限制不允许 audio autoplay, 必须用户主动交互(例如 click)后才能播放 audio,
-        // 因此我们通过一个用户交互事件来主动 play 一下 audio.
-        window.addEventListener('touchstart', forceSafariPlayAudio, false);
-
-        audioEl.src = "http://www.51bbw.cn/mp3/1youdiantian.mp3";
-    })();
-    </script>
-	
-   </body>
+<!-- JQuery -->
+<script src="js/typed.min.js"></script>
+<script src="js/start_onlyyou.js"></script>
+<script src="js/jweixin-1.2.0.js"></script>
+<script src='js/theme_common.js'></script>
+<script language='JavaScript'>$.getScript('https://s4.cnzz.com/z_stat.php?id=1278559043&web_id=1278559043')</script>
+</body>
 </html>
-
