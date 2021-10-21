@@ -207,7 +207,13 @@ require(['jquery'], function ($) {
 	var bookMarkFn = function (ele, options) {
 		this.$ele = $(ele);
 		this.options = {
-			data: [{ "name": "精选", "url": "choice()", "icon": "icon/discover.png" }, { "name": "微博", "url": "https://weibo.com", "icon": "icon/weibo.png" }, { "name": "Bilibili", "url": "https://m.bilibili.com", "icon": "icon/bilibilibog.png" }, { "name": "知乎", "url": "https://www.zhihu.com", "icon": "icon/zhihu.png" }, { "name": "淘宝", "url": "https://m.taobao.com", "icon": "icon/taobao.png" }, { "name": "贴吧", "url": "https://tieba.baidu.com", "icon": "icon/tieba.png" }, { "name": "IT之家", "url": "https://m.ithome.com", "icon": "icon/ithome.png" }, { "name": "网易", "url": "https://3g.163.com", "icon": "icon/netease.png" }, { "name": "热榜", "url": "https://tophub.today", "icon": "icon/tophub.png" }, { "name": "导航", "url": "http://guozhivip.com/", "icon": "icon/pp93.png" }],
+			data: [{ "name": "精选", "url": "choice()", "icon": "icon/1.ico" },  { "name": "搜索聚合", "url": "http://www.17so.cn/", "icon": "icon/2.ico" },
+			{ "name": "上电自助服务", "url": "https://shiep.edu.cn/for_student/list.htm", "icon": "icon/3.ico" }, 
+			{ "name": "上电教务处", "url": "https://jwc.shiep.edu.cn/", "icon": "icon/4.ico" }, 
+			{ "name": "上电教务", "url": "https://jw.shiep.edu.cn/", "icon": "icon/5.ico" }, 
+			{ "name": "科塔学术导航", "url": "https://site.sciping.com/", "icon": "icon/6.ico" }, { "name": "拷贝兔", "url": "https://cp.anyknew.com/", "icon": "icon/7.ico" },
+			 { "name": "在线工具", "url": "http://tool.liumingye.cn/", "icon": "icon/8.ico" },
+			  { "name": "优聚集", "url": "https://ujuji.com/", "icon": "icon/9.ico" }, { "name": "果汁导航", "url": "http://guozhivip.com/", "icon": "icon/10.ico" }],
 		};
 		this.options = $.extend({}, this.options, options);
 		this.init();
