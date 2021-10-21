@@ -4,7 +4,7 @@ workbox.routing.registerRoute(/([\/|.|\w|\s|-])*\.(?:png|gif|jpg|jpeg|webp|svg|i
     cacheName: 'static-resources',
     plugins: [new workbox.expiration.Plugin({
         maxEntries: 500, // 最大保存项目
-        maxAgeSeconds: 1 * 24 , // 缓存 1 天
+        maxAgeSeconds: 1 * 24 * 60 * 60, // 缓存 1 天
         purgeOnQuotaError: true
     })]
 }));
