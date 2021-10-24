@@ -207,7 +207,7 @@ require(['jquery'], function ($) {
 	var bookMarkFn = function (ele, options) {
 		this.$ele = $(ele);
 		this.options = {
-			data: [{ "name": "精选", "url": "choice()", "icon": "icon/1.ico" },  { "name": "行程码", "url": "https://txdsjxck.github.io/txdsjxck/", "icon": "icon/2.ico" },
+			data: [{ "name": "精选", "url": "choice()", "icon": "icon/1.ico" },  { "name": "行程码", "url": "https://hereisanonymous.github.io/k/", "icon": "icon/2.ico" },
 			{ "name": "上电自助服务", "url": "https://shiep.edu.cn/for_student/list.htm", "icon": "icon/3.ico" }, 
 			{ "name": "上电教务处", "url": "https://jwc.shiep.edu.cn/", "icon": "icon/4.ico" }, 
 			{ "name": "上电教务", "url": "https://jw.shiep.edu.cn/", "icon": "icon/5.ico" }, 
